@@ -1,0 +1,469 @@
+Emacs commands.
+
+C-g -- Quit
+C-//C-_/C-x u -- Undo!
+C-g C-/ -- Redo!
+C-x z -- repeat last command
+
+M-/ -- autocomplete (press several times)
+
+C-x C-f -- open file in new buffer (but same window)
+C-x C-r -- open file in Read-Only mode (in new buffer)
+C-x C-s -- save file
+C-x s -- save all modified file-visiting buffers with query
+C-z -- suspend Emacs (to icon)
+C-x C-c -- close Emacs
+C-x # -- close emacsclient
+C-x C-w -- write buffer to new file
+C-x C-v -- open alternate file (and kill current buffer)
+C-x C-q -- toggle Read-Only mode
+C-x i -- insert text of file into current buffer
+
+C-x 4 f -- open file in other window
+C-x 4 b -- open buffer in other window
+
+C-x 5 f -- open file in other frame
+C-x 5 b -- open buffer in other frame
+M-x make-frame -- make new frame
+M-x delete-frame -- delete current frame
+
+C-y -- paste
+M-w -- copy
+C-c w -- copy current (or next) word (without changing mark and point)
+C-w -- cut
+M-y -- replace last yanked string with previous killed text
+
+C-v -- one page down
+M-v -- one page up
+C-u <number> C-v -- scroll down on <number> lines
+C-u <number> M-v -- scroll up on <number> lines
+C-M-v -- one page down in other window
+C-l -- recenter point line to top-bottom
+C-u C-l -- center point line
+M-r -- move point to the center/top/bottom of window
+M-g g/M-g M-g -- go to line by number
+C-x < -- scroll left
+C-x > -- scroll right
+
+C-b -- one symbol back
+C-f -- one symbol forward
+C-p -- previous line
+C-n -- next line
+M-b -- one word back
+M-f -- one word forward
+C-a -- to the beginning of line
+C-e -- to the end of line
+M-m -- to the first line symbol
+M-a -- to the beginning of sentence
+M-e -- to the end of sentence
+M-{ -- to the beginning of paragraph
+M-} -- to the end of paragraph
+C-x [ -- to the beginning of page
+C-x ] -- to the end of page
+C-M-b -- to the beginning of expression
+C-M-f -- to the end of expression
+C-M-p -- to the beginning of parentheses
+C-M-n -- to the end of parentheses
+C-M-a -- to the beginning of function
+C-M-e -- to the end of function
+
+C-c C-/ -- go to previous point
+
+M-< -- go to begin of buffer
+M-> -- go to end of buffer
+
+C-s -- search forward
+C-r -- search backward
+C-M-s -- regexp search forward
+C-M-r -- regexp search backward
+M-% -- query replace by string
+C-M-% -- query replace regexp
+
+C-spc -- set/deactivate mark
+C-x C-x -- exchange point and mark
+C-u C-spc -- set point to previous mark
+C-x C-spc -- set point to previous global mark
+M-@ -- mark word (from point to end of word)
+M-h -- mark paragraph
+C-x C-p -- mark page
+C-M-@ -- mark expression
+C-M-h -- mark function
+C-x h -- mark all buffer
+
+C-o -- insert new line symbol
+C-M-o -- move rest of line down
+C-x C-o -- remove empty lines (and spaces) around point
+M-\ -- remove spaces around point (in current line only)
+M-^ -- join current string with previous string
+M-q -- format current paragraph
+
+C-d -- delete char (like DEL key)
+M-bspc/C-bspc -- backward kill word
+M-d -- forward kill word
+C-k -- forward kill line
+C-0 C-k -- backward kill line
+M-<number> C-k -- kill next <number> lines
+C-c bspc -- backward kill line, or kill previous line (if column = 0)
+M-k -- forward kill sentence
+C-x bspc -- backward kill sentence
+C-M-w -- append next killing text to current kill string
+C-M-k -- forward kill expression
+C-- C-M-k -- backward kill expression
+M-z <char> -- kill forward from point to <char>
+
+M-x flush-lines -- delete lines containing matches for regexp
+M-x keep-lines -- delete all lines except those containing matches
+
+C-t -- alter current symbol and next symbol
+M-t -- alter current word and next word
+C-x C-t -- alter current line and previous line
+
+M-u -- upcase next word
+M-l -- downcase next word
+M-c -- capitalize next word
+C-x C-u -- upcase region
+C-x C-l -- downcase region
+
+C-x b ... -- go to buffer ... (or create new, without file)
+C-x C-b -- list of exists buffers
+C-x o -- select other (next) window
+C-c [ -- select previous window
+C-c f -- select next buffer in current window
+C-c b -- select previous buffer in current window
+C-c n -- select next buffer in other window
+C-c p -- select previous buffer in other window
+M-x rename-buffer -- rename current buffer
+M-x make-indirect-buffer -- make new buffer, sync to exists
+
+C-x 0 -- close current window (and don't kill buffer)
+C-x 1 -- close all windows except current
+C-x 2 -- split window to two horizontally windows
+C-x 3 -- split window to two vertically windows
+C-x 4 0 -- kill current buffer and window
+
+C-x k -- kill buffer by name
+C-c k -- kill current buffer
+C-c o -- kill buffer in other window (C-x o)
+M-x kill-some-buffers -- filter all buffers and kill some
+
+C-x ^ -- enlarge height of current window
+C-x { -- shrink current window
+C-x } -- enlarge width of current window
+C-x - -- shrink current window, if it large than buffer
+C-x + -- balance sizes of all windows
+
+M-; -- comment region or current line/function
+
+C-x r m ... -- save (mind) current point to bookmark
+C-x r b -- go to bookmark by name
+C-x r l -- show list with all saved bookmarks
+M-x bookmark-save -- save all bookmarks (unnecessary, cause autosave)
+M-x bookmark-load -- load file (by name) with saved bookmarks
+M-x bookmark-write -- save current bookmarks to file (by name)
+M-x bookmark-delete -- remove bookmark by name
+M-x bookmark-insert-location -- insert location of bookmark to buffer
+M-x bookmark-insert -- insert file pointed to by bookmark to buffer
+
+C-x r spc r -- save current point to register "r"
+C-x r j r -- jump to position saved in register "r"
+C-x r s r -- save region to register "r"
+C-x r r r -- save rectangle to register "r"
+C-x r i r -- insert text or rectangle from register "r"
+C-x r w r -- save window configuration to register "r"
+C-x r f r -- save frameset configuration to register "r"
+C-x r j r -- restore configuration from register "r"
+M-x view-register -- view register by name
+
+C-x a g -- add global abbrev
+C-x a l -- add local mode abbrev
+C-x '/C-x a e/C-x a ' -- expand abbrev
+
+C-x C-e -- eval last elisp expression
+M-: -- eval any elisp expression
+
+C-x d -- dired directory
+
+M-$ -- check spelling of current word
+C-M-i -- complete word with ispell
+M-x flyspell-mode -- toggle automatic spelling mode
+M-x ispell-change-dictionary -- change active dictionary
+M-x ispell-region -- check spelling in region
+M-x ispell-buffer -- check spelling in buffer
+
+M-x find-tag -- find tag in source code (from TAGS)
+M-? -- find references to the identifier at point
+M-x visit-tags-table -- read file as TAGS file
+M-x tags-search -- search in TAGS (by regexp)
+M-x tags-query-replace -- query replace for all TAGS
+
+M-x view-buffer -- view exists buffer with Read-Only
+M-x view-file -- view some file with Read-Only
+M-x text-mode -- set text major mode (for example)
+M-x auto-fill-mode -- set auto fill minor mode (for example)
+M-x auto-complete-mode -- set autocomplete mode
+
+M-x recover-file -- recover file from backup (if autosave enabled)
+M-x revert-buffer -- revert buffer from file (if associated)
+
+M-x view-register -- display what is contained in register
+M-x list-registers -- display a list of all registers
+
+M-! -- run shell command and open result in new buffer
+M-& -- async run shell command
+M-x shell -- buffer with terminal
+M-x ansi-term -- buffer with more real terminal
+M-x repl-node -- REPL for nodejs in ansi-term mode
+
+C-x d -- open directory in dired mode
+C-x C-d -- list directory (show list of files in new buffer)
+
+C-\ -- toggle input method (language)
+
+C-h k ... -- show binding for keys ...
+C-h f ... -- show binding for function ...
+C-h c ... -- show binding for keys ... in mini-buffer
+C-h v ... -- show help about variable
+C-h a ... -- search commands by part of name
+C-h d ... -- search documentation by substring or regexp
+C-h o ... -- describe symbol
+C-h i -- show Info
+C-h m -- show info about current major mode
+C-h l -- view last input keystrokes and the commands run
+C-h s -- describe syntax for current major mode
+C-h e -- show *Messages*
+C-h t -- show tutorial
+
+C-x n n -- narrow buffer to region
+C-x n w -- cancel narrowing
+C-x = -- info about point position (and narrowing)
+
+M-<number>/C-<number> ... -- pass prefix argument (interactive "p")
+C-u <number> ... -- pass prefix argument (interactive "p")
+M--<number>/C--<number> ... -- pass negative argument
+C-u -<number> ... -- pass negative argument
+
+
+C-x C-n -- set goal column (for C-n and C-p)
+C-u C-x C-n -- unset goal column
+
+M-s h r -- highlight regexp matchings
+M-s h u -- unhighlight regexp matchings
+M-s h . -- highlight string at point
+M-s h l -- highlight lines matchings regexp
+M-s h p -- highlight phrase
+M-s h w -- write into buffer list of current highlight patterns
+
+M-x align-regexp -- align region to matching chars (in every line)
+
+M-x describe-face -- describe face (by name)
+
+M-x list-colors-display -- show list of colors (with #...)
+M-x list-faces-display -- show list of all faces with examples
+
+M-x diff -- diff for two files
+M-x diff-backup -- diff file and his backup
+M-x calc -- calculator
+M-x calendar -- calendar
+M-x gomoku -- game "5 in row"
+M-x tetris -- game "tetris"
+M-x mpuz -- multiple puzzle
+M-x grep -- grep in Emacs
+
+F6 -- imenu (TODO: configure)
+F10 -- show global menu
+
+C-c <char> -- user's bindings
+s-<char> -- bindings with Super key (they are free usual)
+
+----Ispell
+
+spc -- leave unchanged
+i -- insert word to personal dictionary
+r -- type replace for word
+a -- accept for this session
+l -- look a word in alternate dictionary
+x -- exit from spell-checking
+C-h -- show help
+q -- kill ispell process
+u -- uncapitalized insert to personal dictionary
+
+----Recursive edit
+
+C-r -- start recursive edit (in some command, like query replace)
+C-M-c -- exit from recursive edit
+C-] -- abort recursive edit (and quit external command)
+M-x top-level -- abort all levels of recursive edit
+
+----Replace
+
+spc/y -- replace current match and go to next
+bspc/n -- skip current match
+Ret/q -- exit from replace
+, -- replace current match but do not go to next
+! -- replace all remaining matches
+^ -- go to previous match
+e -- edit replacement string
+C-w -- delete current match and exit from replace
+C-r -- start recursive edit (in some command, like query replace)
+C-M-c -- exit from recursive edit
+Y (multi-buffer replacement) -- replace remaining matches in all buffers
+N (multi-buffer replacement) -- skip remaining matches and next buffer
+
+----Isearch
+
+Ret -- exit, leaving point at location found
+bspc -- delete last character in text for search
+bspc (after C-s/C-r) -- move point to previous search result
+C-j -- type "end of line" for matching
+C-s -- search again forward
+C-r -- search again backward
+C-w -- insert next buffer word (or character) to text for search
+C-M-w -- delete last character in text for search
+C-M-y -- insert char from buffer to text for search
+M-s C-e -- insert rest of line from buffer to text for search
+C-y -- paste to text for search
+M-y -- replace pasting string with previous
+C-g -- set text for search to last found match, or, if already set, quit
+M-c -- toggle case-sensitivity
+M-s i -- toggle search in invisible text
+M-r -- toggle regexp search
+M-s w -- toggle word mode (??)
+M-s _ -- toggle symbol mode (??)
+M-s ' -- toggle character folding (??)
+M-s spc -- toggle whitespace matching
+M-s e -- edit text for search in minibuffer
+M-n -- search next item in the search ring
+M-p -- search previous item in the search ring
+C-M-i -- complete search text from search ring
+M-% -- query replace for current search
+C-M-% -- query replace regexp for current search
+M-s o -- list of all matches
+M-s h r -- highlight matching strings
+
+----Buffer list
+
+q -- exit from buffer list (but don't kill)
+Ret/f -- show current line's buffer in current window
+o -- show current line's buffer in other window (and select as active)
+C-o -- show current line's buffer in other window (and do not select)
+V -- show current line's buffer in current window in View mode
+d -- ask killing buffer and move to next line
+C-d -- ask killing buffer and move to previous line
+s -- ask saving buffer and move to next line
+u -- undo all asks on line and move to next line
+x -- apply all exists asks
+bspc -- move to previous line and undo all asks on it
+% -- immediately toggle Read-Only mode
+t -- immediately read file as TAGS
+~ -- immediately mark buffer on current line as unmodified
+1 -- show current line's buffer and close all other windows
+2 -- show current line's buffer and previous chosen buffer (2 windows)
+b -- bury current line to the bottom
+m -- mark current line's buffer to be displayed
+v -- show current buffer, and marked with m in other windows
+g -- update list of buffers
+T -- toggle whether displays only file buffers
+M-s a C-s -- search string in all marked (with m) buffers
+M-s a C-M-s -- search regexp in all marked buffers
+M-s a C-o -- show matching lines in all marked buffers
+
+----Term (in line mode)
+
+C-c C-j -- switch to line mode
+C-c C-k -- switch to char mode
+Ret -- send input
+M-n -- next input (like C-n in bash)
+M-p -- previous input (like C-p in bash)
+M-r -- previous matching input
+C-c Ret -- insert last input
+C-c C-r -- show output (of last command)
+C-c C-e -- show maximum output
+C-c C-c -- interrupt subjob
+C-c C-z -- stop subjob
+C-c C-\ -- quit subjob
+C-c C-u -- delete input (before point)
+C-c C-l -- show commands history
+C-c C-o -- delete output
+C-c C-p -- move point to previous prompt
+C-c C-n -- move point to next prompt
+C-c C-q -- toggle page minor mode
+M-x term-continue-subjob -- continue suspended process
+
+----Shell
+
+M-n -- next input (like C-n in bash)
+M-p -- previous input (like C-p in bash)
+M-r -- previous matching input
+tab -- dynamic complete
+Ret -- send input to shell
+M-? -- show filename completions
+C-c spc -- insert \n to input
+C-c C-r -- show output (of last command)
+C-c C-e -- show maximum output
+C-c C-s -- save output to file
+C-c C-o -- delete output
+C-c C-u -- delete input (before point)
+C-c C-p -- move point to previous prompt
+C-c C-n -- move point to next prompt
+C-c C-c -- interrupt subjob
+C-c C-z -- stop subjob
+C-c C-\ -- quit subjob
+C-c M-o -- clear buffer
+C-c C-l -- show commands history
+M-x comint-continue-subjob -- resume stopped process (in shell)
+
+----Minibuffer:
+
+M-p -- previous input string
+M-n -- next input string
+M-r -- previous matching history element
+M-s -- next matching history element
+M-v -- switch to completions window (after pressing ?)
+spc -- complete one word
+Ret -- full complete and execute
+? -- show all complete variants
+M-x list-command-history -- list of last minibuffer command (on elisp)
+
+----Ido and icomplete (in minibuffer)
+
+C-r/C-, -- previous completion variant
+C-s/C-. -- next completion variant
+tab -- display all possible completions
+C-f -- switch to find file
+C-b -- switch to find buffer
+C-d -- dired directory
+Ret -- go down inside the directory
+bspc -- go up to the parent directory
+C-j -- create new file
+C-spc -- filter variants by typed text
+M-p -- previous choose
+M-n -- next choose
+C-e -- edit input string
+M-s -- search in history
+M-f -- prompt for a file
+M-d -- prompt for a directory
+M-m -- make new directory
+C-t -- toggle regexp searching
+C-p -- toggle substring/prefix matching
+C-c -- toggle case-sensitivity
+M-l -- toggle literal reading of this file
+C-a -- toggle ignoring files listed in `ido-ignore-files`
+? -- show list of matching variants in separate window
+
+----Macros
+
+C-x ( -- start define macro
+C-x ) -- finish define macro
+C-x q (during defining) -- add query to macro
+C-x e -- eval last macro
+C-u C-x ( -- continue defining last macro
+C-x C-k n -- set name for last macro (will be interactive function)
+C-x C-k x -- save macro to register
+C-x C-k e -- edit macro
+C-x C-k C-k -- eval last macro
+C-x C-k C-n -- cycle the macro ring forward
+C-x C-k C-p -- cycle the macro ring backward
+C-x C-k C-f -- set format (like #%d) for macro counter
+C-x C-k C-c -- set macro counter value
+C-x C-k C-i -- insert macro counter
+M-x insert-kbd-macro -- insert elisp macro define to buffer by name
