@@ -202,6 +202,8 @@ M-x text-mode -- set text major mode (for example)
 M-x auto-fill-mode -- set auto fill minor mode (for example)
 M-x auto-complete-mode -- set autocomplete mode
 
+M-x list-packages -- show list of all available packages
+
 M-x recover-file -- recover file from backup (if autosave enabled)
 M-x revert-buffer -- revert buffer from file (if associated)
 
@@ -423,6 +425,12 @@ spc -- complete one word
 Ret -- full complete and execute
 ? -- show all complete variants
 M-x list-command-history -- list of last minibuffer command (on elisp)
+
+----Flycheck
+
+C-c ! l -- list of all errors
+C-c ! n -- show next error
+C-c ! p -- show previous error
 
 ----Ido and icomplete (in minibuffer)
 
