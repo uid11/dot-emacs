@@ -60,7 +60,7 @@
 
 (require 'whitespace)
 (setq whitespace-style
- '(face lines tabs spaces space-mark tab-mark trailing))
+ '(face lines-tail tabs spaces space-mark tab-mark trailing))
 (set-face-attribute
  'whitespace-space nil :background nil :foreground "#444")
 (set-face-attribute
@@ -76,7 +76,7 @@
 
 (set-face-foreground 'vertical-border "#222")
 
-(defconst cust-def-indent 2
+(defconst cust-def-indent 4
   "The size of standard indent.")
 (setq-default standard-indent cust-def-indent)
 (setq-default tab-width cust-def-indent)
@@ -180,7 +180,7 @@ This function should call from pre-command-hook."
 (defconst cust-def-repl-node-name "repl-node"
   "The name of repl-node buffer.")
 
-(defconst cust-def-repl-node-path "~/Disk/JS/repl-node.js"
+(defconst cust-def-repl-node-path "~/JS/repl-node.js"
   "The path to repl-node script.")
 
 (defun cust-def-run-repl-node-script ()
@@ -246,10 +246,10 @@ If point locate in the beginning of line, kill previous line."
 (global-set-key (kbd "C-c n") 'cust-def-next-buffer-in-other-window)
 (global-set-key (kbd "C-c w") 'cust-def-copy-current-word)
 
-(add-to-list 'default-frame-alist '(font .
-  "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" ))
-(set-face-attribute 'default nil :font
-  "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" )
+;(add-to-list 'default-frame-alist '(font .
+;  "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" ))
+;(set-face-attribute 'default nil :font
+;  "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" )
 
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
@@ -277,15 +277,23 @@ If point locate in the beginning of line, kill previous line."
 (add-to-list 'ac-modes 'fundamental-mode)
 (add-to-list 'ac-modes 'json-mode)
 (add-to-list 'ac-modes 'js2-mode)
+(add-to-list 'ac-modes 'nxml-mode)
 
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 
 (require 'json-mode)
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+          '(javascript-jshint)))
+
+(flycheck-add-mode 'javascript-eslint 'web-mode)
 
 (provide '.emacs)
 ;;; .emacs ends here

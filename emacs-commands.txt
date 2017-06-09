@@ -96,6 +96,7 @@ C-x C-o -- remove empty lines (and spaces) around point
 M-\ -- remove spaces around point (in current line only)
 M-^ -- join current string with previous string
 M-q -- format current paragraph
+C-M \ -- indent text in region
 
 C-d -- delete char (like DEL key)
 M-bspc/C-bspc -- backward kill word
