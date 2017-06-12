@@ -437,7 +437,7 @@ C-c ! p -- show previous error
 
 C-r/C-, -- previous completion variant
 C-s/C-. -- next completion variant
-tab -- display all possible completions
+tab/? -- display all possible completions
 C-f -- switch to find file
 C-b -- switch to find buffer
 C-d -- dired directory
@@ -448,7 +448,7 @@ C-spc -- filter variants by typed text
 M-p -- previous choose
 M-n -- next choose
 C-e -- edit input string
-M-s -- search in history
+M-s -- search in history (only for buffers select)
 M-f -- prompt for a file
 M-d -- prompt for a directory
 M-m -- make new directory
@@ -457,7 +457,6 @@ C-p -- toggle substring/prefix matching
 C-c -- toggle case-sensitivity
 M-l -- toggle literal reading of this file
 C-a -- toggle ignoring files listed in `ido-ignore-files`
-? -- show list of matching variants in separate window
 
 ----Macros
 

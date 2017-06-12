@@ -13,6 +13,7 @@
 ;;  magit for Git -- unnecessary
 ;;  cider (https://github.com/clojure-emacs/cider)
 ;;  parinfer
+;;  ibuffer (yet another buffers list -- and it's a part of Emacs)
 
 ;;; Code:
 
@@ -133,6 +134,7 @@
   (setf ido-enable-flex-matching t)
   (icomplete-mode t)
 
+(global-set-key (kbd "C-x C-b") 'bs-show)
 (global-set-key (kbd "C-п") 'keyboard-quit)
 (global-set-key (kbd "C-ч C-с") 'save-buffers-kill-terminal)
 (global-set-key (kbd "C-ч C-ы") 'save-buffer)
