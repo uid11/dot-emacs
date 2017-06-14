@@ -191,6 +191,8 @@ M-x ispell-change-dictionary -- change active dictionary
 M-x ispell-region -- check spelling in region
 M-x ispell-buffer -- check spelling in buffer
 
+C-x Ret r -- revert buffer with concrete coding system
+
 M-x find-tag -- find tag in source code (from TAGS)
 M-? -- find references to the identifier at point
 M-x visit-tags-table -- read file as TAGS file
