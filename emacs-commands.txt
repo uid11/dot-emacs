@@ -155,6 +155,9 @@ C-x + -- balance sizes of all windows
 
 M-; -- comment region or current line/function
 
+C-x C-+ -- increase buffer font size
+C-x C-- -- decrease buffer font size
+
 C-x r m ... -- save (mind) current point to bookmark
 C-x r b -- go to bookmark by name
 C-x r l -- show list with all saved bookmarks
