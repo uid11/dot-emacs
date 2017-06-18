@@ -255,6 +255,9 @@ If point locate in the beginning of line, kill previous line."
 ;(set-face-attribute 'default nil :font
 ;  "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" )
 
+(set-face-attribute 'default (selected-frame) :height 110)
+(set-frame-size (selected-frame) 230 70)
+
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
