@@ -204,6 +204,7 @@ M-x view-file -- view some file with Read-Only
 M-x text-mode -- set text major mode (for example)
 M-x auto-fill-mode -- set auto fill minor mode (for example)
 M-x auto-complete-mode -- set autocomplete mode
+M-x electric-indent-mode -- toggle electric indent mode
 
 M-x list-packages -- show list of all available packages
 
