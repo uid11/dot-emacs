@@ -95,6 +95,8 @@
 (fringe-mode '(4 . 0))
 (setq-default indicate-buffer-boundaries 'left)
 
+(set-background-color "#000")
+
 (defconst cust-def-scroll-width 12
   "The width of vertical scroll bar for all windows.")
 ;; (set-window-scroll-bars nil cust-def-scroll-width 'right)
