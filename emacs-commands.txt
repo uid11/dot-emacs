@@ -68,6 +68,7 @@ C-M-a -- to the beginning of function
 C-M-e -- to the end of function
 
 C-c C-/ -- go to previous point
+C-c C-f -- collapse/expand block of code
 
 M-< -- go to begin of buffer
 M-> -- go to end of buffer
