@@ -69,6 +69,10 @@ C-M-e -- to the end of function
 
 C-c C-/ -- go to previous point
 C-c C-f -- collapse/expand block of code
+C-c i -- insert js-doc comments
+@ (in js2-mode) -- insert js-doc tag
+
+C-x l -- count lines (and empty lines) in current buffer
 
 M-< -- go to begin of buffer
 M-> -- go to end of buffer
