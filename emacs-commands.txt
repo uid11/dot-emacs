@@ -443,6 +443,15 @@ M-x list-command-history -- list of last minibuffer command (on elisp)
 C-c ! l -- list of all errors
 C-c ! n -- show next error
 C-c ! p -- show previous error
+C-c ! ? -- describe checker
+C-c ! H -- display local help
+C-c ! V -- flycheck version
+C-c ! e -- explain error at point
+C-c ! s -- select checker
+C-c ! v -- verify setup
+C-u C-c ! x -- enable disabled checkers
+M-: (executable-find "eslint") -- check that Emacs find the eslint executable
+M-x flycheck-select-checker <RET> javascript-eslint -- select checker
 
 ----Ido and icomplete (in minibuffer)
 
