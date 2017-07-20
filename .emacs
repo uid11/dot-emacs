@@ -86,6 +86,8 @@
 (setq-default js-indent-level cust-def-indent)
 (setq-default css-indent-offset cust-def-indent)
 
+(setq-default whitespace-line-column 120)
+
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
@@ -170,7 +172,7 @@
 
 (defun cust-def-set-local-previous-point ()
   "Set value of buffer-local previous point.
-This function should call from pre-command-hook."
+This function should call from 'pre-command-hook'."
   (if (not (eq this-command 'cust-def-goto-local-previous-point))
       (setf cust-def-local-previous-point (point))))
 
@@ -255,7 +257,7 @@ If point locate in the beginning of line, kill previous line."
 ;(set-face-attribute 'default nil :font
 ;  "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" )
 
-(set-face-attribute 'default (selected-frame) :height 110)
+(set-face-attribute 'default (selected-frame) :height 120)
 (set-frame-size (selected-frame) 230 70)
 
 (put 'narrow-to-region 'disabled nil)
@@ -289,6 +291,7 @@ If point locate in the beginning of line, kill previous line."
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.yate$" . web-mode))
 
 (require 'json-mode)
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
@@ -296,11 +299,40 @@ If point locate in the beginning of line, kill previous line."
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
+(setf js2-strict-trailing-comma-warning nil)
+
+(set-face-foreground 'js2-object-property "#85ad91")
+(set-face-foreground 'js2-function-call "#b39999")
+
 (setq-default flycheck-disabled-checkers
   (append flycheck-disabled-checkers
           '(javascript-jshint)))
 
+(setq-default flycheck-eslint-rules-directories nil)
+
 (flycheck-add-mode 'javascript-eslint 'web-mode)
+
+(defun cust-def-use-eslint-from-node-modules ()
+  "Set local eslint for flycheck."
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "partnernode"))
+         (eslint (and root
+                      (expand-file-name "partnernode/node_modules/.bin/eslint"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
+(add-hook 'flycheck-mode-hook #'cust-def-use-eslint-from-node-modules)
+
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+(require 'js-doc)
+
+(add-hook 'js2-mode-hook
+          #'(lambda ()
+              (define-key js2-mode-map "\C-ci" 'js-doc-insert-function-doc)
+              (define-key js2-mode-map "@" 'js-doc-insert-tag)))
 
 (provide '.emacs)
 ;;; .emacs ends here
