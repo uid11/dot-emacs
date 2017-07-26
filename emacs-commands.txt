@@ -218,6 +218,10 @@ M-x list-packages -- show list of all available packages
 
 M-x recover-file -- recover file from backup (if autosave enabled)
 M-x revert-buffer -- revert buffer from file (if associated)
+M-x revert-buffer-with-coding-system -- change coding system (line endings),
+    utf-8-unix’ (for LF),
+    utf-8-mac’ (for CR),
+    utf-8-dos’ (for CR+LF)
 
 M-x view-register -- display what is contained in register
 M-x list-registers -- display a list of all registers
