@@ -287,6 +287,7 @@ If point locate in the beginning of line, kill previous line."
 (add-to-list 'ac-modes 'json-mode)
 (add-to-list 'ac-modes 'js2-mode)
 (add-to-list 'ac-modes 'nxml-mode)
+(add-to-list 'ac-modes 'css-mode)
 
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
@@ -311,6 +312,7 @@ If point locate in the beginning of line, kill previous line."
 (setq-default flycheck-eslint-rules-directories nil)
 
 (flycheck-add-mode 'javascript-eslint 'web-mode)
+(flycheck-add-mode 'css-csslint 'css-mode)
 
 (defun cust-def-use-eslint-from-node-modules ()
   "Set local eslint for flycheck."

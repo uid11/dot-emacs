@@ -9,6 +9,7 @@ M-/ -- autocomplete (press several times)
 
 C-x C-f -- open file in new buffer (but same window)
 C-x C-r -- open file in Read-Only mode (in new buffer)
+C-x C-f /sudo::/path/to/file -- open file with sudo
 C-x C-s -- save file
 C-x s -- save all modified file-visiting buffers with query
 C-z -- suspend Emacs (to icon)
@@ -206,6 +207,8 @@ M-? -- find references to the identifier at point
 M-x visit-tags-table -- read file as TAGS file
 M-x tags-search -- search in TAGS (by regexp)
 M-x tags-query-replace -- query replace for all TAGS
+M-. -- find xref definitions
+M-, -- xref pop market stack
 
 M-x view-buffer -- view exists buffer with Read-Only
 M-x view-file -- view some file with Read-Only
