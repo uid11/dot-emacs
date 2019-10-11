@@ -11,10 +11,7 @@
     "dot"
   ],
   "dependencies": {},
-  "devDependencies": {
-    "eslint": "^3.19.0",
-    "eslint-plugin-react": "^7.0.1"
-  },
+  "devDependencies": {},
   "author": "uid-11222",
   "homepage": "https://github.com/uid-11222/dot-emacs",
   "repository": {

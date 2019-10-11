@@ -67,6 +67,7 @@ C-M-p -- to the beginning of parentheses
 C-M-n -- to the end of parentheses
 C-M-a -- to the beginning of function
 C-M-e -- to the end of function
+C-c C-f -- hide function code (js2-mode)
 
 C-c C-/ -- go to previous point
 C-c C-f -- collapse/expand block of code
@@ -263,7 +264,6 @@ C-u <number> ... -- pass prefix argument (interactive "p")
 M--<number>/C--<number> ... -- pass negative argument
 C-u -<number> ... -- pass negative argument
 
-
 C-x C-n -- set goal column (for C-n and C-p)
 C-u C-x C-n -- unset goal column
 
@@ -295,6 +295,8 @@ F10 -- show global menu
 
 C-c <char> -- user's bindings
 s-<char> -- bindings with Super key (they are free usual)
+
+Recompile .emacs.d dir: (byte-recompile-directory package-user-dir nil 'force)
 
 ----Ispell
 
@@ -502,3 +504,13 @@ C-x C-k C-f -- set format (like #%d) for macro counter
 C-x C-k C-c -- set macro counter value
 C-x C-k C-i -- insert macro counter
 M-x insert-kbd-macro -- insert elisp macro define to buffer by name
+
+----Tide
+
+M-. -- jump to definition of the symbol at point
+M-, -- return to pre-jump position
+M-x tide-references -- list of all references to the symbol at point
+M-x tide-project-errors -- list all errors in the project
+M-x tide-error-at-point -- show the deatils of the error at point
+M-x tide-verify-setup -- show the version of tsserver
+M-x tide-list-servers -- show list the tsserver processes

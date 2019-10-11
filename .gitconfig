@@ -1,0 +1,5 @@
+[user]
+	email = uid.11222@gmail.com
+	name = uid-11222
+[core]
+	editor = emacsclient

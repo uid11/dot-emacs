@@ -5,6 +5,7 @@
 ;; packages:
 ;;  web-mode
 ;;  js2-mode
+;;  rjsx-mode
 ;;  json-mode
 ;;  flycheck
 ;;  auto-complete (need (ac-flyspell-workaround) to work with flyspell)
@@ -34,7 +35,7 @@
  '(indicate-buffer-boundaries (quote left))
  '(package-selected-packages
    (quote
-    (auto-complete flycheck json-mode js2-mode web-mode)))
+    (nginx-mode dockerfile-mode yaml-mode tide company typescript-mode js-doc rainbow-delimiters rainbow-mode helm rjsx-mode auto-complete flycheck json-mode js2-mode web-mode)))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -272,7 +273,7 @@ If point locate in the beginning of line, kill previous line."
 (require 'package)
 
 (add-to-list
- 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+ 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
 (global-auto-complete-mode t)
@@ -286,12 +287,18 @@ If point locate in the beginning of line, kill previous line."
 (add-to-list 'ac-modes 'fundamental-mode)
 (add-to-list 'ac-modes 'json-mode)
 (add-to-list 'ac-modes 'js2-mode)
+(add-to-list 'ac-modes 'rjsx-mode)
 (add-to-list 'ac-modes 'nxml-mode)
 (add-to-list 'ac-modes 'css-mode)
+(add-to-list 'ac-modes 'typescript-mode)
+
+(setq web-mode-enable-current-element-highlight t)
+(setq web-mode-enable-current-column-highlight t)
 
 (require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.yate$" . web-mode))
 
 (require 'json-mode)
@@ -300,27 +307,48 @@ If point locate in the beginning of line, kill previous line."
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
+(require 'rjsx-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.js.flow\\'" . rjsx-mode))
+
 (setf js2-strict-trailing-comma-warning nil)
 
 (set-face-foreground 'js2-object-property "#85ad91")
 (set-face-foreground 'js2-function-call "#b39999")
+;(set-face-foreground 'rjsx-tag "#B5ad91")
+;(set-face-foreground 'rjsx-attr "#85Dd91")
 
 (setq-default flycheck-disabled-checkers
   (append flycheck-disabled-checkers
-          '(javascript-jshint)))
+          '(javascript-jshint json-python-json typescript-tslint)))
 
 (setq-default flycheck-eslint-rules-directories nil)
 
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+(defun setup-tide-mode ()
+  "Setup tide mode."
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
+  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint)
+  (company-mode +1))
+
+(setq company-tooltip-align-annotations t)
+
 (flycheck-add-mode 'css-csslint 'css-mode)
+(flycheck-add-mode 'javascript-eslint 'json-mode)
+(flycheck-add-mode 'javascript-eslint 'rjsx-mode)
+(flycheck-add-mode 'javascript-eslint 'web-mode)
 
 (defun cust-def-use-eslint-from-node-modules ()
   "Set local eslint for flycheck."
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
-                "partnernode"))
+                "node_modules"))
          (eslint (and root
-                      (expand-file-name "partnernode/node_modules/.bin/eslint"
+                      (expand-file-name "node_modules/.bin/eslint"
                                         root))))
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
@@ -329,13 +357,51 @@ If point locate in the beginning of line, kill previous line."
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
 (require 'js-doc)
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
 
 (add-hook 'js2-mode-hook
           #'(lambda ()
               (define-key js2-mode-map "\C-ci" 'js-doc-insert-function-doc)
               (define-key js2-mode-map "@" 'js-doc-insert-tag)))
 
+(add-hook 'rjsx-mode-hook
+          #'(lambda ()
+              (define-key rjsx-mode-map "\C-ci" 'js-doc-insert-function-doc)
+              (define-key rjsx-mode-map "@" 'js-doc-insert-tag)))
+
+;(require 'flycheck-flow)
+;(add-hook 'javascript-mode-hook 'flycheck-mode)
+
+;(flycheck-add-mode 'javascript-flow 'rjsx-mode)
+
+;(flycheck-add-next-checker 'javascript-flow 'javascript-eslint)
+; no (flycheck-add-next-checker 'javascript-flow 'javascript-flow-coverage)
+
+(load-file "~/.emacs.d/flow-for-emacs/flow.el")
+; no (load-file "~/.emacs.d/flow-minor-mode/flow-minor-mode.el")
+; no (load-file "~/.emacs.d/flow-js2-mode/flow-js2-mode.el")
+
+; Do this:
+; (setf js2-mode-show-parse-errors nil)
+
+; no (setf rjsx-mode-show-parse-errors nil)
+
+(require 'helm-config)
+
+(helm-mode 1)
+
+(global-set-key (kbd "C-c C-f") 'helm-find-files)
+
+(setf text-scale-mode-step 1.05)
+
 (provide '.emacs)
 ;;; .emacs ends here
-
