@@ -35,7 +35,7 @@
  '(indicate-buffer-boundaries (quote left))
  '(package-selected-packages
    (quote
-    (nginx-mode dockerfile-mode yaml-mode tide company typescript-mode js-doc rainbow-delimiters rainbow-mode helm rjsx-mode auto-complete flycheck json-mode js2-mode web-mode)))
+    (markdown-mode dash helm-core async prettier nginx-mode dockerfile-mode yaml-mode tide company typescript-mode js-doc rainbow-delimiters rainbow-mode helm rjsx-mode auto-complete flycheck json-mode js2-mode web-mode)))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -87,7 +87,7 @@
 (setq-default js-indent-level cust-def-indent)
 (setq-default css-indent-offset cust-def-indent)
 
-(setq-default whitespace-line-column 120)
+(setq-default whitespace-line-column 100)
 
 (setq show-paren-delay 0)
 (show-paren-mode 1)
@@ -135,7 +135,7 @@
 
 (require 'ido)
   (ido-mode t)
-  (ido-everywhere t)
+; (ido-everywhere t)
   (setf ido-enable-flex-matching t)
   (icomplete-mode t)
 
@@ -281,6 +281,7 @@ If point locate in the beginning of line, kill previous line."
 (ac-flyspell-workaround)
 
 (add-to-list 'ac-modes 'Emacs-Lisp)
+(add-to-list 'ac-modes 'sh-mode)
 (add-to-list 'ac-modes 'Javascript)
 (add-to-list 'ac-modes 'web-mode)
 (add-to-list 'ac-modes 'text-mode)
@@ -291,6 +292,8 @@ If point locate in the beginning of line, kill previous line."
 (add-to-list 'ac-modes 'nxml-mode)
 (add-to-list 'ac-modes 'css-mode)
 (add-to-list 'ac-modes 'typescript-mode)
+
+(add-to-list 'auto-mode-alist '("\\.bashrc$" . sh-mode))
 
 (setq web-mode-enable-current-element-highlight t)
 (setq web-mode-enable-current-column-highlight t)
@@ -306,10 +309,16 @@ If point locate in the beginning of line, kill previous line."
 
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.cjs\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
 
 (require 'rjsx-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.js.flow\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.cjs\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.cjs.flow\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs.flow\\'" . rjsx-mode))
 
 (setf js2-strict-trailing-comma-warning nil)
 
@@ -353,7 +362,19 @@ If point locate in the beginning of line, kill previous line."
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
 
+(defun cust-def-use-markdownlint-from-node-modules ()
+  "Set local markdownlint for flycheck."
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (markdownlint (and root
+                      (expand-file-name "node_modules/.bin/markdownlint"
+                                        root))))
+    (when (and markdownlint (file-executable-p markdownlint))
+      (setq-local flycheck-markdown-markdownlint-cli-executable markdownlint))))
+
 (add-hook 'flycheck-mode-hook #'cust-def-use-eslint-from-node-modules)
+(add-hook 'flycheck-mode-hook #'cust-def-use-markdownlint-from-node-modules)
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
@@ -377,6 +398,15 @@ If point locate in the beginning of line, kill previous line."
           #'(lambda ()
               (define-key rjsx-mode-map "\C-ci" 'js-doc-insert-function-doc)
               (define-key rjsx-mode-map "@" 'js-doc-insert-tag)))
+
+(add-hook 'css-mode-hook 'prettier-mode)
+(add-hook 'js2-mode-hook 'prettier-mode)
+(add-hook 'json-mode-hook 'prettier-mode)
+(add-hook 'markdown-mode-hook 'prettier-mode)
+(add-hook 'rjsx-mode-hook 'prettier-mode)
+(add-hook 'typescript-mode-hook 'prettier-mode)
+(add-hook 'web-mode-hook 'prettier-mode)
+(add-hook 'yaml-mode-hook 'prettier-mode)
 
 ;(require 'flycheck-flow)
 ;(add-hook 'javascript-mode-hook 'flycheck-mode)
