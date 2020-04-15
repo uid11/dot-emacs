@@ -12,14 +12,14 @@
   ],
   "dependencies": {},
   "devDependencies": {},
-  "author": "uid-11222",
-  "homepage": "https://github.com/uid-11222/dot-emacs",
+  "author": "uid11",
+  "homepage": "https://github.com/uid11/dot-emacs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/uid-11222/dot-emacs"
+    "url": "https://github.com/uid11/dot-emacs"
   },
   "bugs": {
-    "url": "https://github.com/uid-11222/dot-emacs/issues"
+    "url": "https://github.com/uid11/dot-emacs/issues"
   },
   "license": "MIT"
 }

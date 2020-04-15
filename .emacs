@@ -30,12 +30,11 @@
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(column-number-mode t)
- '(cursor-type (quote bar))
- '(custom-enabled-themes (quote (wombat)))
- '(indicate-buffer-boundaries (quote left))
+ '(cursor-type 'bar)
+ '(custom-enabled-themes '(wombat))
+ '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   (quote
-    (markdown-mode dash helm-core async prettier nginx-mode dockerfile-mode yaml-mode tide company typescript-mode js-doc rainbow-delimiters rainbow-mode helm rjsx-mode auto-complete flycheck json-mode js2-mode web-mode)))
+   '(prettier-js markdown-mode dash helm-core async nginx-mode dockerfile-mode yaml-mode tide company typescript-mode js-doc rainbow-delimiters rainbow-mode helm rjsx-mode auto-complete flycheck json-mode js2-mode web-mode))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -269,6 +268,7 @@ If point locate in the beginning of line, kill previous line."
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
+(set-frame-font "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" nil t)
 
 (require 'package)
 
@@ -338,6 +338,7 @@ If point locate in the beginning of line, kill previous line."
   (interactive)
   (tide-setup)
   (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
   (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
@@ -399,14 +400,15 @@ If point locate in the beginning of line, kill previous line."
               (define-key rjsx-mode-map "\C-ci" 'js-doc-insert-function-doc)
               (define-key rjsx-mode-map "@" 'js-doc-insert-tag)))
 
-(add-hook 'css-mode-hook 'prettier-mode)
-(add-hook 'js2-mode-hook 'prettier-mode)
-(add-hook 'json-mode-hook 'prettier-mode)
-(add-hook 'markdown-mode-hook 'prettier-mode)
-(add-hook 'rjsx-mode-hook 'prettier-mode)
-(add-hook 'typescript-mode-hook 'prettier-mode)
-(add-hook 'web-mode-hook 'prettier-mode)
-(add-hook 'yaml-mode-hook 'prettier-mode)
+(require 'prettier-js)
+(add-hook 'css-mode-hook 'prettier-js-mode)
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'json-mode-hook 'prettier-js-mode)
+(add-hook 'markdown-mode-hook 'prettier-js-mode)
+(add-hook 'rjsx-mode-hook 'prettier-js-mode)
+(add-hook 'typescript-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'yaml-mode-hook 'prettier-js-mode)
 
 ;(require 'flycheck-flow)
 ;(add-hook 'javascript-mode-hook 'flycheck-mode)
