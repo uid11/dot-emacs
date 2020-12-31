@@ -110,7 +110,7 @@
 
 (setf frame-title-format "%b")
 
-(visit-tags-table "~/.emacs.d/source-tags/")
+;(visit-tags-table "~/.emacs.d/source-tags/")
 
 (global-auto-revert-mode 1)
 
@@ -195,7 +195,7 @@ This function should call from 'pre-command-hook'."
       (insert (concat cust-def-repl-node-path "\n"))))
 
 (defun repl-node ()
-  "Run repl-node in ansi-term mode."
+  "Run repl-node in 'ansi-term' mode."
   (interactive)
   (ansi-term "/bin/bash" cust-def-repl-node-name))
 
@@ -211,7 +211,7 @@ If point locate in the beginning of line, kill previous line."
   (kill-line (if (eq (point) (line-beginning-position)) -1 0)))
 
 (defun cust-def-previous-window ()
-  "Select previous window -- like other-window, but in reverse order."
+  "Select previous window -- like 'other-window', but in reverse order."
   (interactive)
   (other-window -1))
 
@@ -303,6 +303,7 @@ If point locate in the beginning of line, kill previous line."
 (add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.yate$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.vue$" . web-mode))
 
 (require 'json-mode)
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
@@ -392,12 +393,12 @@ If point locate in the beginning of line, kill previous line."
 
 (add-hook 'js2-mode-hook
           #'(lambda ()
-              (define-key js2-mode-map "\C-ci" 'js-doc-insert-function-doc)
+              (define-key js2-mode-map (kbd "C-c i") 'js-doc-insert-function-doc)
               (define-key js2-mode-map "@" 'js-doc-insert-tag)))
 
 (add-hook 'rjsx-mode-hook
           #'(lambda ()
-              (define-key rjsx-mode-map "\C-ci" 'js-doc-insert-function-doc)
+              (define-key rjsx-mode-map (kbd "C-c i") 'js-doc-insert-function-doc)
               (define-key rjsx-mode-map "@" 'js-doc-insert-tag)))
 
 (require 'prettier-js)
@@ -409,18 +410,6 @@ If point locate in the beginning of line, kill previous line."
 (add-hook 'typescript-mode-hook 'prettier-js-mode)
 (add-hook 'web-mode-hook 'prettier-js-mode)
 (add-hook 'yaml-mode-hook 'prettier-js-mode)
-
-;(require 'flycheck-flow)
-;(add-hook 'javascript-mode-hook 'flycheck-mode)
-
-;(flycheck-add-mode 'javascript-flow 'rjsx-mode)
-
-;(flycheck-add-next-checker 'javascript-flow 'javascript-eslint)
-; no (flycheck-add-next-checker 'javascript-flow 'javascript-flow-coverage)
-
-(load-file "~/.emacs.d/flow-for-emacs/flow.el")
-; no (load-file "~/.emacs.d/flow-minor-mode/flow-minor-mode.el")
-; no (load-file "~/.emacs.d/flow-js2-mode/flow-js2-mode.el")
 
 ; Do this:
 ; (setf js2-mode-show-parse-errors nil)
