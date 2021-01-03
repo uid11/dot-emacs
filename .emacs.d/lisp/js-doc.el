@@ -47,8 +47,6 @@
 
 ;;; Code:
 
-;(require 'iswitchb)
-
 ;;; Custom:
 (defgroup js-doc nil
   "Insert JsDoc style comment easily."
@@ -415,13 +413,6 @@ The comment style can be custimized via `customize-group js-doc'"
            (incf field-count)
            (incf field-count)))
         js-doc-bottom-line)))))
-
-;; http://www.emacswiki.org/emacs/UseIswitchBuffer
-;(defun js-doc-icompleting-read (prompt collection)
-;  (let ((iswitchb-make-buflist-hook
-;	 #'(lambda ()
-;             (setq iswitchb-temp-buflist collection))))
-;    (iswitchb-read-buffer prompt nil nil)))
 
 (defun js-doc-make-tag-list ()
   (let ((taglist '()))

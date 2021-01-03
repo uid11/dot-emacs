@@ -9,7 +9,6 @@
 ;;  json-mode
 ;;  flycheck
 ;;  auto-complete (need (ac-flyspell-workaround) to work with flyspell)
-;;  Tern for tags (http://ternjs.net/doc/manual.html#emacs)
 ;;  https://github.com/mooz/js-doc -- for es-doc comments
 ;;  magit for Git -- unnecessary
 ;;  cider (https://github.com/clojure-emacs/cider)
@@ -34,7 +33,7 @@
  '(custom-enabled-themes '(wombat))
  '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   '(prettier-js markdown-mode dash helm-core async nginx-mode dockerfile-mode yaml-mode tide company typescript-mode js-doc rainbow-delimiters rainbow-mode helm rjsx-mode auto-complete flycheck json-mode js2-mode web-mode))
+   '(vterm prettier-js nginx-mode js-doc auto-complete company dockerfile-mode flycheck helm js2-mode json-mode markdown-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -88,9 +87,11 @@
 
 (setq-default whitespace-line-column 100)
 
+(require 'paren)
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
+(require 'linum)
 (setq linum-format "%2d")
 (set-face-attribute 'linum nil :foreground "#555")
 
@@ -125,6 +126,7 @@
 (setf auto-save-default nil)
 (setf create-lockfiles nil)
 
+(require 'bookmark)
 (setf bookmark-save-flag 1)
 (setf bookmark-search-size 64)
 
@@ -199,6 +201,7 @@ This function should call from 'pre-command-hook'."
   (interactive)
   (ansi-term "/bin/bash" cust-def-repl-node-name))
 
+(require 'term)
 (add-hook 'term-mode-hook (lambda ()
   (define-key term-raw-map (kbd "C-y") 'term-paste)
   (define-key term-raw-map (kbd "C-н") 'term-paste)
@@ -227,18 +230,26 @@ If point locate in the beginning of line, kill previous line."
 
 (defun cust-def-end-of-word-p ()
   "Return t if point is at the end of word."
-  (save-excursion
+  (save-mark-and-excursion
     (let ((pt (point)))
       (and (backward-word) (forward-word) (eq pt (point))))))
 
 (defun cust-def-copy-current-word ()
   "Copy (in kill ring) current word without changing mark and point."
   (interactive)
-  (save-excursion
+  (save-mark-and-excursion
     (if (not (cust-def-end-of-word-p)) (forward-word))
     (let ((pt (point)))
       (backward-word)
       (copy-region-as-kill pt (point)))))
+
+(defun cust-def-show-buffer-file-name ()
+  "Show buffer file name in minibuffer."
+  (interactive)
+  (message buffer-file-name))
+
+(fset 'cust-def-insert-js-doc
+   (kmacro-lambda-form [?\M-m ?\C-  ?\C-a ?\M-w ?\C-o ?/ ?* ?* ?* ?/ ?\C-a ?\C-y ?\C-e ?\C-b ?\C-b return ?\C-y ?  ?\C-a ?\C-o ?\C-y ?  ?* ? ] 0 "%d"))
 
 (global-set-key (kbd "<f6>") 'imenu)
 (global-set-key (kbd "C-c DEL") 'cust-def-kill-backward-line)
@@ -251,6 +262,7 @@ If point locate in the beginning of line, kill previous line."
 (global-set-key (kbd "C-c p") 'cust-def-previous-buffer-in-other-window)
 (global-set-key (kbd "C-c n") 'cust-def-next-buffer-in-other-window)
 (global-set-key (kbd "C-c w") 'cust-def-copy-current-word)
+(global-set-key (kbd "C-c i") 'cust-def-show-buffer-file-name)
 
 ;(add-to-list 'default-frame-alist '(font .
 ;  "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" ))
@@ -280,6 +292,7 @@ If point locate in the beginning of line, kill previous line."
 (global-flycheck-mode t)
 (ac-flyspell-workaround)
 
+(require 'auto-complete)
 (add-to-list 'ac-modes 'Emacs-Lisp)
 (add-to-list 'ac-modes 'sh-mode)
 (add-to-list 'ac-modes 'Javascript)
@@ -295,10 +308,9 @@ If point locate in the beginning of line, kill previous line."
 
 (add-to-list 'auto-mode-alist '("\\.bashrc$" . sh-mode))
 
+(require 'web-mode)
 (setq web-mode-enable-current-element-highlight t)
 (setq web-mode-enable-current-column-highlight t)
-
-(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
@@ -328,6 +340,7 @@ If point locate in the beginning of line, kill previous line."
 ;(set-face-foreground 'rjsx-tag "#B5ad91")
 ;(set-face-foreground 'rjsx-attr "#85Dd91")
 
+(require 'flycheck)
 (setq-default flycheck-disabled-checkers
   (append flycheck-disabled-checkers
           '(javascript-jshint json-python-json typescript-tslint)))
@@ -346,6 +359,7 @@ If point locate in the beginning of line, kill previous line."
   (flycheck-add-next-checker 'tsx-tide 'javascript-eslint)
   (company-mode +1))
 
+(require 'company)
 (setq company-tooltip-align-annotations t)
 
 (flycheck-add-mode 'css-csslint 'css-mode)
@@ -382,8 +396,6 @@ If point locate in the beginning of line, kill previous line."
 
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-(require 'js-doc)
-
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
 (add-hook 'web-mode-hook
@@ -393,13 +405,19 @@ If point locate in the beginning of line, kill previous line."
 
 (add-hook 'js2-mode-hook
           #'(lambda ()
-              (define-key js2-mode-map (kbd "C-c i") 'js-doc-insert-function-doc)
+              (define-key js2-mode-map (kbd "C-c I") 'js-doc-insert-function-doc)
               (define-key js2-mode-map "@" 'js-doc-insert-tag)))
 
 (add-hook 'rjsx-mode-hook
           #'(lambda ()
-              (define-key rjsx-mode-map (kbd "C-c i") 'js-doc-insert-function-doc)
+              (define-key rjsx-mode-map (kbd "C-c I") 'js-doc-insert-function-doc)
               (define-key rjsx-mode-map "@" 'js-doc-insert-tag)))
+
+(require 'typescript-mode)
+(add-hook 'typescript-mode-hook
+          #'(lambda ()
+              (define-key typescript-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
+              (define-key typescript-mode-map "@" 'js-doc-insert-tag)))
 
 (require 'prettier-js)
 (add-hook 'css-mode-hook 'prettier-js-mode)
@@ -411,18 +429,18 @@ If point locate in the beginning of line, kill previous line."
 (add-hook 'web-mode-hook 'prettier-js-mode)
 (add-hook 'yaml-mode-hook 'prettier-js-mode)
 
-; Do this:
-; (setf js2-mode-show-parse-errors nil)
-
-; no (setf rjsx-mode-show-parse-errors nil)
-
 (require 'helm-config)
 
 (helm-mode 1)
 
-(global-set-key (kbd "C-c C-f") 'helm-find-files)
+(global-set-key (kbd "C-x f") 'helm-find-files)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(require 'face-remap)
 (setf text-scale-mode-step 1.05)
+
+(require 'vterm)
+(setq vterm-buffer-name-string "%s")
 
 (provide '.emacs)
 ;;; .emacs ends here

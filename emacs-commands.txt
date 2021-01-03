@@ -71,7 +71,7 @@ C-c C-f -- hide function code (js2-mode)
 
 C-c C-/ -- go to previous point
 C-c C-f -- collapse/expand block of code
-C-c i -- insert js-doc comments
+C-c I -- insert js-doc comments
 @ (in js2-mode) -- insert js-doc tag
 
 C-x l -- count lines (and empty lines) in current buffer
@@ -140,6 +140,7 @@ C-c f -- select next buffer in current window
 C-c b -- select previous buffer in current window
 C-c n -- select next buffer in other window
 C-c p -- select previous buffer in other window
+C-c i -- show file name of current buffer
 M-x rename-buffer -- rename current buffer
 M-x make-indirect-buffer -- make new buffer, sync to exists
 
@@ -219,6 +220,7 @@ M-x auto-complete-mode -- set autocomplete mode
 M-x electric-indent-mode -- toggle electric indent mode
 
 M-x list-packages -- show list of all available packages
+M-x package-autoremove -- remove unnecessary packages
 
 M-x recover-file -- recover file from backup (if autosave enabled)
 M-x revert-buffer -- revert buffer from file (if associated)
@@ -235,6 +237,8 @@ M-& -- async run shell command
 M-x shell -- buffer with terminal
 M-x ansi-term -- buffer with more real terminal
 M-x repl-node -- REPL for nodejs in ansi-term mode
+M-x vterm -- open vterm buffer in current window
+M-x vterm-other-window -- open vterm buffer in other window
 
 C-x d -- open directory in dired mode
 C-x C-d -- list directory (show list of files in new buffer)
@@ -243,7 +247,7 @@ C-\ -- toggle input method (language)
 
 C-h k ... -- show binding for keys ...
 C-h f ... -- show description for function ...
-C-h c ... -- show binding for keys ... in mini-buffer
+C-h c ... -- show binding for keys ... in minibuffer
 C-h v ... -- show help about variable
 C-h a ... -- search commands by part of name
 C-h d ... -- search documentation by substring or regexp
@@ -391,6 +395,88 @@ M-s a C-s -- search string in all marked (with m) buffers
 M-s a C-M-s -- search regexp in all marked buffers
 M-s a C-o -- show matching lines in all marked buffers
 
+----Ibuffer
+
+q -- exit from buffer list (but don't kill)
+Ret/f/e -- show current line's buffer in current window (visit buffer)
+o -- show current line's buffer in other window (and select as active)
+C-o -- show current line's buffer in other window (and do not select)
+d -- mark current buffer for deletion
+C-d -- mark previous buffer for deletion
+x -- kill buffers, marked for deletion (or kill current buffer)
+bspc -- move to previous line and remove all marks from it
+n -- go to next line
+p -- go to previous line
+, -- change sorting mode
+s i -- invert sorting mode
+s a -- sort by alphabetic
+s v -- sort by recency (default)
+s s -- sort by size
+s f -- sort by filename/process
+s m -- sort by major mode
+M-n -- go to next filter group
+M-p -- go to previous filter group
+% n -- mark by name regexp
+% m -- mark by major mode regexp
+% f -- mark by filename regexp
+% g -- mark by content regexp
+t -- invert all marks
+~ -- immediately mark/unmark marked buffers as unmodified
+b -- bury current line to the bottom
+m -- mark current line's buffer
+u -- unmark current line's buffer
+= -- show diff with files for marked buffers
+j -- jump to buffer (in list)
+bspc -- unmark buffer
+D -- delete (kill) marked buffers
+I -- replace text by regexp in marked buffers
+U -- unmark all buffers
+M -- toggle modified flag for marked buffers
+S -- save marked buffers
+T -- toggle readonly status in marked buffers
+r -- replace text by regexp in current buffer
+. -- mark old buffers
+v -- open marked buffers (in windows)
+g -- update list of buffers
+M-s a C-s -- search string in all marked (with m) buffers
+M-s a C-M-s -- search regexp in all marked buffers
+M-s a C-o -- show matching lines in all marked buffers
+/ -- filter mode
+/ / -- clear filter
+/ m -- filter by major mode
+/ n -- filter by name
+/ E -- filter by process
+/ * -- filter starred
+/ f -- filter by filename
+/ F -- filter by directory
+/ b -- filter by basename (filename without path)
+/ . -- filter by file extension
+/ < -- filter by size (less than)
+/ > -- filter by size (greater than)
+/ i -- filter modified
+/ c -- filter by content
+
+----Packages list
+
+U -- mark package for upgrade
+u -- unmark marked package
+i -- mark package for install
+d -- mark package for deletion
+x -- apply all exists asks
+~ -- mark obsolete packages for deletion
+/ / -- clear filter
+/ N -- filter packages by name or description
+/ n -- filter packages by name
+/ s -- filter packages by status
+/ u -- filter upgradable packages
+/ v -- filter packages by Version
+
+----Vterm
+
+C-c C-t -- enable/disable copy mode in vterm buffer
+C-c C-l -- clears the current buffer from lines that it is not currently visible
+C-l -- clear visible lines
+
 ----Term (in line mode)
 
 C-c C-j -- switch to line mode
@@ -436,7 +522,7 @@ C-c M-o -- clear buffer
 C-c C-l -- show commands history
 M-x comint-continue-subjob -- resume stopped process (in shell)
 
-----Minibuffer:
+----Minibuffer
 
 M-p -- previous input string
 M-n -- next input string
