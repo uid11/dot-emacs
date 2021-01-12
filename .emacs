@@ -33,7 +33,7 @@
  '(custom-enabled-themes '(wombat))
  '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   '(vterm prettier-js nginx-mode js-doc auto-complete company dockerfile-mode flycheck helm js2-mode json-mode markdown-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
+   '(vterm company dockerfile-mode helm markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)

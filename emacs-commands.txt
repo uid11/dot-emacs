@@ -5,9 +5,13 @@ C-//C-_/C-x u -- Undo!
 C-g C-/ -- Redo!
 C-x z -- repeat last command
 
+esc esc esc -- global quit (in minibuffer -- from query-replace, recursive edit,
+    or close all windows except current)
+
 M-/ -- autocomplete (press several times)
 
 C-x C-f -- open file in new buffer (but same window)
+C-x f -- open file in new buffer via Helm
 C-x C-r -- open file in Read-Only mode (in new buffer)
 C-x C-f /sudo::/path/to/file -- open file with sudo
 C-x C-s -- save file
@@ -249,15 +253,23 @@ C-h k ... -- show binding for keys ...
 C-h f ... -- show description for function ...
 C-h c ... -- show binding for keys ... in minibuffer
 C-h v ... -- show help about variable
-C-h a ... -- search commands by part of name
+C-h a ... -- search commands and functions by part of name
 C-h d ... -- search documentation by substring or regexp
 C-h o ... -- describe symbol
-C-h i -- show Info
+C-h w ... -- show keybindings for command (where-is)
+C-h P ... -- describe package
+C-h R ... -- show manual in info mode
+C-h b -- show all current key bindings
+C-h i -- open buffer in info mode
 C-h m -- show info about current major mode
 C-h l -- view last input keystrokes and the commands run
 C-h s -- describe syntax for current major mode
 C-h e -- show *Messages*
 C-h t -- show tutorial
+C-h r -- shom Emacs manual in info mode
+C-h . -- show all available help for current point
+C-h ? -- show info about all C-h-bindings
+C-h C-a -- show "About GNU Emacs" buffer
 
 C-x n n -- narrow buffer to region
 C-x n w -- cancel narrowing
@@ -293,6 +305,9 @@ M-x gomoku -- game "5 in row"
 M-x tetris -- game "tetris"
 M-x mpuz -- multiple puzzle
 M-x grep -- grep in Emacs
+
+M-x browse-url ... -- open url in suitable browser
+M-x browse-web ... -- open url in eww (Emacs Web Wowser)
 
 F6 -- imenu (TODO: configure)
 F10 -- show global menu
@@ -433,7 +448,7 @@ I -- replace text by regexp in marked buffers
 U -- unmark all buffers
 M -- toggle modified flag for marked buffers
 S -- save marked buffers
-T -- toggle readonly status in marked buffers
+T -- toggle Read-Only status in marked buffers
 r -- replace text by regexp in current buffer
 . -- mark old buffers
 v -- open marked buffers (in windows)

@@ -1,10 +1,5 @@
-.emacs.d/.emacs*
-.emacs.d/ac-comphist.dat
-.emacs.d/all-backups/
-.emacs.d/auto-save-list/
-.emacs.d/eln-cache/
-.emacs.d/bookmarks
-.emacs.d/ido.last
-.emacs.d/session*
-.emacs.d/tramp
+.emacs.d/*
+!.emacs.d/elpa
+!.emacs.d/lisp
+!.emacs.d/source-tags
 node_modules
