@@ -206,6 +206,11 @@ M-x ispell-change-dictionary -- change active dictionary
 M-x ispell-region -- check spelling in region
 M-x ispell-buffer -- check spelling in buffer
 
+C-c t -- translate (en->ru, via google) current word (at point) or current region
+C-c T ... -- translate (en->ru) text via google
+C-c r -- translate (ru->en, via google) current word (at point) or current region
+C-c R ... -- translate (ru->en) text via google
+
 C-x Ret r -- revert buffer with concrete coding system
 
 M-x find-tag -- find tag in source code (from TAGS)
@@ -240,7 +245,6 @@ M-! -- run shell command and open result in new buffer
 M-& -- async run shell command
 M-x shell -- buffer with terminal
 M-x ansi-term -- buffer with more real terminal
-M-x repl-node -- REPL for nodejs in ansi-term mode
 M-x vterm -- open vterm buffer in current window
 M-x vterm-other-window -- open vterm buffer in other window
 
@@ -303,8 +307,10 @@ M-x calc -- calculator
 M-x calendar -- calendar
 M-x gomoku -- game "5 in row"
 M-x tetris -- game "tetris"
-M-x mpuz -- multiple puzzle
+M-x mpuz -- mult puzzle (math game with equations)
+M-x sokoban -- game "Sokoban"
 M-x grep -- grep in Emacs
+M-x typit-basic-test -- start typing test (like Solo)
 
 M-x browse-url ... -- open url in suitable browser
 M-x browse-web ... -- open url in eww (Emacs Web Wowser)
@@ -484,7 +490,12 @@ x -- apply all exists asks
 / n -- filter packages by name
 / s -- filter packages by status
 / u -- filter upgradable packages
-/ v -- filter packages by Version
+/ v -- filter packages by version
+
+----Markdown
+
+C-c C-c c -- check undefined references in current md-buffer
+C-c C-c p -- live preview md in gh-style in browser (markdown-preview-mode)
 
 ----Vterm
 

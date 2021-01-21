@@ -1,4 +1,5 @@
 .emacs.d/*
+!.emacs.d/github-pandoc.html
 !.emacs.d/elpa
 !.emacs.d/lisp
 !.emacs.d/source-tags

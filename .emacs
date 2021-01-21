@@ -33,7 +33,7 @@
  '(custom-enabled-themes '(wombat))
  '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   '(vterm company dockerfile-mode helm markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
+   '(markdown-preview-mode google-translate sokoban typit vterm company dockerfile-mode helm markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -102,9 +102,9 @@
 
 (defconst cust-def-scroll-width 12
   "The width of vertical scroll bar for all windows.")
-;; (set-window-scroll-bars nil cust-def-scroll-width 'right)
-;; (setq-default scroll-bar-width cust-def-scroll-width)
-;; (setf scroll-bar-width cust-def-scroll-width)
+; (set-window-scroll-bars nil cust-def-scroll-width 'right)
+; (setq-default scroll-bar-width cust-def-scroll-width)
+; (setf scroll-bar-width cust-def-scroll-width)
 (set-scroll-bar-mode 'nil)
 
 (setf blink-cursor-blinks 0)
@@ -118,7 +118,7 @@
 (setq
    backup-by-copying t      ; don't clobber symlinks
    backup-directory-alist
-    '(("." . "~/.emacs.d/all-backups"))    ; don't litter my fs tree
+    '(("." . "~/.emacs.d/all-backups")) ; don't litter my fs tree
    delete-old-versions t
    kept-new-versions 6
    kept-old-versions 2
@@ -131,8 +131,8 @@
 (setf bookmark-search-size 64)
 
 (require 'imenu)
-  (setf imenu-auto-rescan      t) ;; always rescan the buffers
-  (setf imenu-use-popup-menu nil) ;; only minibuffer prompts
+  (setf imenu-auto-rescan      t) ; always rescan the buffers
+  (setf imenu-use-popup-menu nil) ; only minibuffer prompts
 
 (require 'ido)
   (ido-mode t)
@@ -140,7 +140,6 @@
   (setf ido-enable-flex-matching t)
   (icomplete-mode t)
 
-(global-set-key (kbd "C-x C-b") 'bs-show)
 (global-set-key (kbd "C-п") 'keyboard-quit)
 (global-set-key (kbd "C-ч C-с") 'save-buffers-kill-terminal)
 (global-set-key (kbd "C-ч C-ы") 'save-buffer)
@@ -185,27 +184,10 @@ This function should call from 'pre-command-hook'."
   (interactive)
   (kill-buffer (window-buffer (next-window))))
 
-(defconst cust-def-repl-node-name "repl-node"
-  "The name of repl-node buffer.")
-
-(defconst cust-def-repl-node-path "~/JS/repl-node.js"
-  "The path to repl-node script.")
-
-(defun cust-def-run-repl-node-script ()
-  "Run repl-node in term mode, if buffer name matching."
-  (if (string-match-p cust-def-repl-node-name (buffer-name))
-      (insert (concat cust-def-repl-node-path "\n"))))
-
-(defun repl-node ()
-  "Run repl-node in 'ansi-term' mode."
-  (interactive)
-  (ansi-term "/bin/bash" cust-def-repl-node-name))
-
 (require 'term)
 (add-hook 'term-mode-hook (lambda ()
   (define-key term-raw-map (kbd "C-y") 'term-paste)
-  (define-key term-raw-map (kbd "C-н") 'term-paste)
-  (cust-def-run-repl-node-script)))
+  (define-key term-raw-map (kbd "C-н") 'term-paste)))
 
 (defun cust-def-kill-backward-line ()
   "Kill backward from point to the beginning of line.
@@ -291,6 +273,14 @@ If point locate in the beginning of line, kill previous line."
 (global-auto-complete-mode t)
 (global-flycheck-mode t)
 (ac-flyspell-workaround)
+
+(ispell-change-dictionary "en_US" t)
+
+(display-time-mode 1)
+(require 'time)
+(setq display-time-string-forms
+      '((propertize (concat " " 24-hours ":" minutes " ")
+                    'face 'egoge-display-time)))
 
 (require 'auto-complete)
 (add-to-list 'ac-modes 'Emacs-Lisp)
@@ -405,12 +395,12 @@ If point locate in the beginning of line, kill previous line."
 
 (add-hook 'js2-mode-hook
           #'(lambda ()
-              (define-key js2-mode-map (kbd "C-c I") 'js-doc-insert-function-doc)
+              (define-key js2-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
               (define-key js2-mode-map "@" 'js-doc-insert-tag)))
 
 (add-hook 'rjsx-mode-hook
           #'(lambda ()
-              (define-key rjsx-mode-map (kbd "C-c I") 'js-doc-insert-function-doc)
+              (define-key rjsx-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
               (define-key rjsx-mode-map "@" 'js-doc-insert-tag)))
 
 (require 'typescript-mode)
@@ -441,6 +431,30 @@ If point locate in the beginning of line, kill previous line."
 
 (require 'vterm)
 (setq vterm-buffer-name-string "%s")
+
+(require 'google-translate)
+(require 'google-translate-default-ui)
+(global-set-key (kbd "C-c t") 'google-translate-at-point)
+(global-set-key (kbd "C-c T") 'google-translate-query-translate)
+(global-set-key (kbd "C-c r") 'google-translate-at-point-reverse)
+(global-set-key (kbd "C-c R") 'google-translate-query-translate-reverse)
+(setq google-translate-default-source-language "en")
+(setq google-translate-default-target-language "ru")
+(setq google-translate-backend-method 'curl)
+
+(defun google-translate--search-tkk ()
+  "Search TKK (fix for https://github.com/atykhonov/google-translate/issues/137)."
+  (list 430675 2721866130))
+
+(require 'markdown-mode)
+(setq markdown-command "pandoc --include-in-header file:///home/uid11/.emacs.d/github-pandoc.html --from markdown -t html5 --mathjax --standalone --variable lang=en --metadata title=___")
+
+(require 'markdown-preview-mode)
+(setq markdown-preview-stylesheets (list))
+
+(add-hook 'markdown-mode-hook
+          #'(lambda ()
+              (define-key markdown-mode-map (kbd "C-c C-c p") 'markdown-preview-mode)))
 
 (provide '.emacs)
 ;;; .emacs ends here
