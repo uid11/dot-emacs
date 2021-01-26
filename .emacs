@@ -33,7 +33,7 @@
  '(custom-enabled-themes '(wombat))
  '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   '(markdown-preview-mode google-translate sokoban typit vterm company dockerfile-mode helm markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
+   '(dash markdown-preview-mode google-translate sokoban typit vterm company dockerfile-mode markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -69,12 +69,14 @@
 (set-face-background 'highlight "#333")
 (set-face-foreground 'highlight nil)
 (set-face-underline 'highlight nil)
-
 (set-face-background 'region "#555")
 
+(set-face-foreground 'vertical-border "#222")
 (set-face-background 'cursor "#f3e406")
 
-(set-face-foreground 'vertical-border "#222")
+(set-face-background 'mode-line-inactive "#202020")
+
+(set-background-color "#0d1117")
 
 (defconst cust-def-indent 4
   "The size of standard indent.")
@@ -97,8 +99,6 @@
 
 (fringe-mode '(4 . 0))
 (setq-default indicate-buffer-boundaries 'left)
-
-(set-background-color "#000")
 
 (defconst cust-def-scroll-width 12
   "The width of vertical scroll bar for all windows.")
@@ -136,7 +136,7 @@
 
 (require 'ido)
   (ido-mode t)
-; (ido-everywhere t)
+  (ido-everywhere t)
   (setf ido-enable-flex-matching t)
   (icomplete-mode t)
 
@@ -419,11 +419,6 @@ If point locate in the beginning of line, kill previous line."
 (add-hook 'web-mode-hook 'prettier-js-mode)
 (add-hook 'yaml-mode-hook 'prettier-js-mode)
 
-(require 'helm-config)
-
-(helm-mode 1)
-
-(global-set-key (kbd "C-x f") 'helm-find-files)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (require 'face-remap)

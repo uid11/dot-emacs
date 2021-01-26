@@ -197,8 +197,6 @@ C-x '/C-x a e/C-x a ' -- expand abbrev
 C-x C-e -- eval last elisp expression
 M-: -- eval any elisp expression
 
-C-x d -- dired directory
-
 M-$ -- check spelling of current word
 C-M-i -- complete word with ispell
 M-x flyspell-mode -- toggle automatic spelling mode
