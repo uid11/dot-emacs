@@ -33,7 +33,7 @@
  '(custom-enabled-themes '(wombat))
  '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   '(dash markdown-preview-mode google-translate sokoban typit vterm company dockerfile-mode markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
+   '(counsel dash markdown-preview-mode google-translate sokoban typit vterm company dockerfile-mode markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -450,6 +450,23 @@ If point locate in the beginning of line, kill previous line."
 (add-hook 'markdown-mode-hook
           #'(lambda ()
               (define-key markdown-mode-map (kbd "C-c C-c p") 'markdown-preview-mode)))
+
+(require 'ivy)
+(ivy-mode 1)
+(setq ivy-count-format "%d/%d ")
+(setq ivy-use-virtual-buffers t)
+(setq ivy-wrap t)
+(set-face-background 'swiper-line-face "#65a7e2")
+(set-face-foreground 'swiper-line-face "#010203")
+
+(global-set-key (kbd "C-s") 'swiper-isearch)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "M-y") 'counsel-yank-pop)
+(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-c C-b") 'counsel-bookmark)
+(global-set-key (kbd "C-c g") 'counsel-rg)
 
 (provide '.emacs)
 ;;; .emacs ends here

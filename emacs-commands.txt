@@ -11,7 +11,6 @@ esc esc esc -- global quit (in minibuffer -- from query-replace, recursive edit,
 M-/ -- autocomplete (press several times)
 
 C-x C-f -- open file in new buffer (but same window)
-C-x f -- open file in new buffer via Helm
 C-x C-r -- open file in Read-Only mode (in new buffer)
 C-x C-f /sudo::/path/to/file -- open file with sudo
 C-x C-s -- save file
@@ -37,6 +36,7 @@ M-w -- copy
 C-c w -- copy current (or next) word (without changing mark and point)
 C-w -- cut
 M-y -- replace last yanked string with previous killed text
+C-c g -- dynamic grep in current directory (or in current Git project)
 
 C-v -- one page down
 M-v -- one page up
@@ -170,8 +170,9 @@ M-; -- comment region or current line/function
 C-x C-+ -- increase buffer font size
 C-x C-- -- decrease buffer font size
 
+C-c C-b -- create new bookmark or jump to existing
 C-x r m ... -- save (mind) current point to bookmark
-C-x r b -- go to bookmark by name
+C-x r b -- jump to bookmark by name
 C-x r l -- show list with all saved bookmarks
 M-x bookmark-save -- save all bookmarks (unnecessary, cause autosave)
 M-x bookmark-load -- load file (by name) with saved bookmarks
@@ -225,6 +226,19 @@ M-x text-mode -- set text major mode (for example)
 M-x auto-fill-mode -- set auto fill minor mode (for example)
 M-x auto-complete-mode -- set autocomplete mode
 M-x electric-indent-mode -- toggle electric indent mode
+M-x counsel-set-variable -- set variable with completions
+M-x counsel-unicode-char -- choose and insert unicode symbol
+M-x counsel-find-library -- choose and open elisp library (from load-path)
+M-x ivy-push-view -- save current view (window tree) with session lifetime
+M-x ivy-pop-view -- delete last saved view
+M-x ivy-switch-view -- switch to selected view
+M-x counsel-git -- find file in current Git repository
+M-x counsel-git-log -- grep and commits in current Git repository
+M-x counsel-linux-app -- choose and launch Linux application
+M-x counsel-fzf -- choose and open file in current directory
+M-x counsel-descbinds -- show all current keybindings
+
+C-c C-r -- resume the last ivy completion session
 
 M-x list-packages -- show list of all available packages
 M-x package-autoremove -- remove unnecessary packages
@@ -307,7 +321,6 @@ M-x gomoku -- game "5 in row"
 M-x tetris -- game "tetris"
 M-x mpuz -- mult puzzle (math game with equations)
 M-x sokoban -- game "Sokoban"
-M-x grep -- grep in Emacs
 M-x typit-basic-test -- start typing test (like Solo)
 
 M-x browse-url ... -- open url in suitable browser
@@ -386,6 +399,17 @@ M-% -- query replace for current search
 C-M-% -- query replace regexp for current search
 M-s o -- list of all matches
 M-s h r -- highlight matching strings
+
+----Swiper Isearch
+
+C-p -- previous search result
+C-n -- next search result
+M-< -- to first search result
+M-> -- to last search result
+M-v -- scroll up
+C-v -- scroll down
+M-q -- query replace for current search
+C-l -- recenter current line on top-bottom
 
 ----Buffer list
 
