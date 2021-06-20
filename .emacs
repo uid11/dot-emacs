@@ -451,7 +451,7 @@ If point locate in the beginning of line, kill previous line."
           #'(lambda ()
               (define-key markdown-mode-map (kbd "C-c C-c p") 'markdown-preview-mode)))
 
-(require 'ivy)
+(require 'counsel)
 (ivy-mode 1)
 (setq ivy-count-format "%d/%d ")
 (setq ivy-use-virtual-buffers t)
