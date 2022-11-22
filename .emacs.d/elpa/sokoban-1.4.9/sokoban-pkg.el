@@ -1,0 +1,2 @@
+;; Generated package description from sokoban.el  -*- no-byte-compile: t -*-
+(define-package "sokoban" "1.4.9" "Implementation of Sokoban for Emacs." '((emacs "23.1") (cl-lib "0.5")) :commit "3043723a7c2557443aa28d871137c8d9c3b46edc" :url "https://elpa.gnu.org/packages/sokoban.html" :authors '(("Glynn Clements" . "glynn.clements@xemacs.org")) :maintainer '("Dieter Deyke" . "dieter.deyke@gmail.com") :keywords '("games"))

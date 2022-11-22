@@ -33,7 +33,8 @@
  '(custom-enabled-themes '(wombat))
  '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   '(counsel dash markdown-preview-mode google-translate sokoban typit vterm company dockerfile-mode markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
+   '(vterm groovy-mode counsel dash markdown-preview-mode google-translate sokoban typit company dockerfile-mode markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
+ ;;'(vterm groovy-mode counsel dash markdown-preview-mode google-translate sokoban typit company dockerfile-mode markdown-mode prettier-js nginx-mode js-doc auto-complete flycheck js2-mode json-mode rainbow-delimiters rainbow-mode rjsx-mode tide typescript-mode web-mode yaml-mode))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -51,7 +52,7 @@
 (electric-pair-mode t)
 (setf use-dialog-box nil)
 
-(global-linum-mode t)
+(global-display-line-numbers-mode)
 (global-whitespace-mode t)
 (global-hl-line-mode t)
 (desktop-save-mode 1)
@@ -92,10 +93,6 @@
 (require 'paren)
 (setq show-paren-delay 0)
 (show-paren-mode 1)
-
-(require 'linum)
-(setq linum-format "%2d")
-(set-face-attribute 'linum nil :foreground "#555")
 
 (fringe-mode '(4 . 0))
 (setq-default indicate-buffer-boundaries 'left)
@@ -173,14 +170,14 @@
 
 (defun cust-def-set-local-previous-point ()
   "Set value of buffer-local previous point.
-This function should call from 'pre-command-hook'."
+This function should call from `pre-command-hook'."
   (if (not (eq this-command 'cust-def-goto-local-previous-point))
       (setf cust-def-local-previous-point (point))))
 
 (add-hook 'pre-command-hook 'cust-def-set-local-previous-point)
 
 (defun cust-def-kill-buffer-in-other-window ()
-  "Kill buffer in \"other-window\" (C-x o)."
+  "Kill buffer in `other-window' (C-x o)."
   (interactive)
   (kill-buffer (window-buffer (next-window))))
 
@@ -196,17 +193,17 @@ If point locate in the beginning of line, kill previous line."
   (kill-line (if (eq (point) (line-beginning-position)) -1 0)))
 
 (defun cust-def-previous-window ()
-  "Select previous window -- like 'other-window', but in reverse order."
+  "Select previous window -- like `other-window', but in reverse order."
   (interactive)
   (other-window -1))
 
 (defun cust-def-next-buffer-in-other-window ()
-  "Select next buffer in \"other-window\" (C-x o)."
+  "Select next buffer in `other-window' (C-x o)."
   (interactive)
   (switch-to-next-buffer (next-window)))
 
 (defun cust-def-previous-buffer-in-other-window ()
-  "Select previous buffer in \"other-window\" (C-x o)."
+  "Select previous buffer in `other-window' (C-x o)."
   (interactive)
   (switch-to-prev-buffer (previous-window)))
 
@@ -231,7 +228,7 @@ If point locate in the beginning of line, kill previous line."
   (message buffer-file-name))
 
 (fset 'cust-def-insert-js-doc
-   (kmacro-lambda-form [?\M-m ?\C-  ?\C-a ?\M-w ?\C-o ?/ ?* ?* ?* ?/ ?\C-a ?\C-y ?\C-e ?\C-b ?\C-b return ?\C-y ?  ?\C-a ?\C-o ?\C-y ?  ?* ? ] 0 "%d"))
+   (kmacro [?\C-a ?\C-o ?\C-o ?\C-o ?/ ?* ?* ?\C-a ?\C-n ?  ?* ?\C-a ?\C-n ?  ?* ?/ ?\C-p ? ] 0 "%d"))
 
 (global-set-key (kbd "<f6>") 'imenu)
 (global-set-key (kbd "C-c DEL") 'cust-def-kill-backward-line)
@@ -262,7 +259,7 @@ If point locate in the beginning of line, kill previous line."
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
-(set-frame-font "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1" nil t)
+(set-frame-font "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-24-*-*-*-m-0-iso10646-1" nil t)
 
 (require 'package)
 
@@ -308,20 +305,17 @@ If point locate in the beginning of line, kill previous line."
 (add-to-list 'auto-mode-alist '("\\.vue$" . web-mode))
 
 (require 'json-mode)
-(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
+(add-to-list 'auto-mode-alist '("\\.json'" . json-mode))
 
 (require 'js2-mode)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.cjs\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.cjs'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs'" . js2-mode))
 
 (require 'rjsx-mode)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
-(add-to-list 'auto-mode-alist '("\\.js.flow\\'" . rjsx-mode))
-(add-to-list 'auto-mode-alist '("\\.cjs\\'" . rjsx-mode))
-(add-to-list 'auto-mode-alist '("\\.cjs.flow\\'" . rjsx-mode))
-(add-to-list 'auto-mode-alist '("\\.mjs\\'" . rjsx-mode))
-(add-to-list 'auto-mode-alist '("\\.mjs.flow\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.js'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.cjs'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs'" . rjsx-mode))
 
 (setf js2-strict-trailing-comma-warning nil)
 
@@ -353,7 +347,6 @@ If point locate in the beginning of line, kill previous line."
 (setq company-tooltip-align-annotations t)
 
 (flycheck-add-mode 'css-csslint 'css-mode)
-(flycheck-add-mode 'javascript-eslint 'json-mode)
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-mode 'javascript-eslint 'web-mode)
 
@@ -393,6 +386,13 @@ If point locate in the beginning of line, kill previous line."
             (when (string-equal "tsx" (file-name-extension buffer-file-name))
               (setup-tide-mode))))
 
+;; need to support js-mode (JavaScript) because emacs opens JS files
+;; with shebang with fallback to this mode
+(add-hook 'js-mode-hook
+          #'(lambda ()
+              (define-key js-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
+              (define-key js-mode-map "@" 'js-doc-insert-tag)))
+
 (add-hook 'js2-mode-hook
           #'(lambda ()
               (define-key js2-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
@@ -403,6 +403,10 @@ If point locate in the beginning of line, kill previous line."
               (define-key rjsx-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
               (define-key rjsx-mode-map "@" 'js-doc-insert-tag)))
 
+(add-hook 'web-mode-hook
+          #'(lambda ()
+              (define-key web-mode-map (kbd "C-c C-b") 'counsel-bookmark)))
+
 (require 'typescript-mode)
 (add-hook 'typescript-mode-hook
           #'(lambda ()
@@ -411,6 +415,7 @@ If point locate in the beginning of line, kill previous line."
 
 (require 'prettier-js)
 (add-hook 'css-mode-hook 'prettier-js-mode)
+(add-hook 'js-mode-hook 'prettier-js-mode)
 (add-hook 'js2-mode-hook 'prettier-js-mode)
 (add-hook 'json-mode-hook 'prettier-js-mode)
 (add-hook 'markdown-mode-hook 'prettier-js-mode)
@@ -424,8 +429,8 @@ If point locate in the beginning of line, kill previous line."
 (require 'face-remap)
 (setf text-scale-mode-step 1.05)
 
-(require 'vterm)
-(setq vterm-buffer-name-string "%s")
+;(require 'vterm)
+;(setq vterm-buffer-name-string "%s")
 
 (require 'google-translate)
 (require 'google-translate-default-ui)
@@ -465,8 +470,11 @@ If point locate in the beginning of line, kill previous line."
 (global-set-key (kbd "M-y") 'counsel-yank-pop)
 (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
+;; todo: this is prefix code in web-mode
 (global-set-key (kbd "C-c C-b") 'counsel-bookmark)
 (global-set-key (kbd "C-c g") 'counsel-rg)
 
 (provide '.emacs)
 ;;; .emacs ends here
+
+;(elisp-eval-buffer)

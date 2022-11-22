@@ -22,6 +22,7 @@ C-x C-w -- write buffer to new file
 C-x C-v -- open alternate file (and kill current buffer)
 C-x C-q -- toggle Read-Only mode
 C-x i -- insert text of file into current buffer
+C-x x g -- revert buffer from file (if associated)
 
 C-x 4 f -- open file in other window
 C-x 4 b -- open buffer in other window
@@ -195,6 +196,7 @@ C-x a g -- add global abbrev
 C-x a l -- add local mode abbrev
 C-x '/C-x a e/C-x a ' -- expand abbrev
 
+C-c C-e -- eval whole buffer as elisp script
 C-x C-e -- eval last elisp expression
 M-: -- eval any elisp expression
 
