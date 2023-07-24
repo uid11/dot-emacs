@@ -10,18 +10,21 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignoreboth:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=1000000
+HISTFILESIZE=2000000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
@@ -57,16 +60,16 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\] '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\w '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\w\a\]$PS1"
     ;;
 *)
     ;;
@@ -116,6 +119,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
+source ~/.git-completion.bash
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 ###-begin-npm-completion-###
 #
 # npm command completion script
@@ -124,66 +133,35 @@ fi
 # Or, maybe: npm completion > /usr/local/etc/bash_completion.d/npm
 #
 
-if type complete &>/dev/null; then
-  _npm_completion () {
-    local words cword
-    if type _get_comp_words_by_ref &>/dev/null; then
-      _get_comp_words_by_ref -n = -n @ -n : -w words -i cword
-    else
-      cword="$COMP_CWORD"
-      words=("${COMP_WORDS[@]}")
-    fi
-
-    local si="$IFS"
-    IFS=$'\n' COMPREPLY=($(COMP_CWORD="$cword" \
-                           COMP_LINE="$COMP_LINE" \
-                           COMP_POINT="$COMP_POINT" \
-                           npm completion -- "${words[@]}" \
-                           2>/dev/null)) || return $?
+_npm_completion () {
+  local words cword
+  if type _get_comp_words_by_ref &>/dev/null; then
+    _get_comp_words_by_ref -n = -n @ -n : -w words -i cword
+  else
+    cword="$COMP_CWORD"
+    words=("${COMP_WORDS[@]}")
+  fi
+   local si="$IFS"
+  if ! IFS=$'\n' COMPREPLY=($(COMP_CWORD="$cword" \
+                         COMP_LINE="$COMP_LINE" \
+                         COMP_POINT="$COMP_POINT" \
+                         npm completion -- "${words[@]}" \
+                         2>/dev/null)); then
+    local ret=$?
     IFS="$si"
-    if type __ltrim_colon_completions &>/dev/null; then
-      __ltrim_colon_completions "${words[cword]}"
-    fi
-  }
-  complete -o default -F _npm_completion npm
-elif type compdef &>/dev/null; then
-  _npm_completion() {
-    local si=$IFS
-    compadd -- $(COMP_CWORD=$((CURRENT-1)) \
-                 COMP_LINE=$BUFFER \
-                 COMP_POINT=0 \
-                 npm completion -- "${words[@]}" \
-                 2>/dev/null)
-    IFS=$si
-  }
-  compdef _npm_completion npm
-elif type compctl &>/dev/null; then
-  _npm_completion () {
-    local cword line point words si
-    read -Ac words
-    read -cn cword
-    let cword-=1
-    read -l line
-    read -ln point
-    si="$IFS"
-    IFS=$'\n' reply=($(COMP_CWORD="$cword" \
-                       COMP_LINE="$line" \
-                       COMP_POINT="$point" \
-                       npm completion -- "${words[@]}" \
-                       2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  compctl -K _npm_completion npm
-fi
+    return $ret
+  fi
+  IFS="$si"
+  if type __ltrim_colon_completions &>/dev/null; then
+    __ltrim_colon_completions "${words[cword]}"
+  fi
+}
+complete -o default -F _npm_completion npm
 ###-end-npm-completion-###
 
-export PATH="$PATH:$HOME/JS/ts-redux-store/node_modules/.bin"
+export PATH="$PATH:$HOME/JS/e2ed/node_modules/.bin:$HOME/JS/mono/apps/web-client/node_modules/.bin:$HOME/bin"
 
 cd ~/JS
-
-export NVM_DIR="$HOME/.config"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 _node_complete() {
   local cur_word options
@@ -197,3 +175,48 @@ _node_complete() {
   fi
 }
 complete -F _node_complete node node_g
+
+_rush_bash_complete()
+{
+  local word=${COMP_WORDS[COMP_CWORD]}
+
+  local completions
+  completions="$(rush tab-complete --position "${COMP_POINT}" --word "${COMP_LINE}" 2>/dev/null)"
+  if [ $? -ne 0 ]; then
+    completions=""
+  fi
+
+  COMPREPLY=( $(compgen -W "$completions" -- "$word") )
+}
+
+complete -f -F _rush_bash_complete rush
+
+
+_rushx_completion () {
+  local words cword
+  if type _get_comp_words_by_ref &>/dev/null; then
+    _get_comp_words_by_ref -n = -n @ -n : -w words -i cword
+    words=(npm run "${words[@]:1}")
+  else
+    cword="$COMP_CWORD"
+    words=(npm run "${COMP_WORDS[@]:1}")
+  fi
+   local si="$IFS"
+  if ! IFS=$'\n' COMPREPLY=($(COMP_CWORD="2" \
+                         COMP_LINE="npm run ${COMP_LINE:6}" \
+                         COMP_POINT="$COMP_POINT" \
+                         npm completion -- "${words[@]}" \
+                         2>/dev/null)); then
+    local ret=$?
+    IFS="$si"
+    return $ret
+  fi
+  IFS="$si"
+  if type __ltrim_colon_completions &>/dev/null; then
+    __ltrim_colon_completions "${words[2]}"
+  fi
+}
+complete -o default -F _rushx_completion rushx
+
+
+eval `keychain --eval --agents ssh id_ed25519`
