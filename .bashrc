@@ -161,6 +161,8 @@ complete -o default -F _npm_completion npm
 
 export PATH="$PATH:$HOME/JS/e2ed/node_modules/.bin:$HOME/JS/mono/apps/web-client/node_modules/.bin:$HOME/bin"
 
+export NODE_REPL_HISTORY_SIZE=1000000
+
 cd ~/JS
 
 _node_complete() {
