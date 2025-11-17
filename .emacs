@@ -10,10 +10,6 @@
   (unless (server-running-p)
     (server-start))
 
-(setq json-object-type 'hash-table
-      json-array-type 'list
-      json-key-type 'string)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
