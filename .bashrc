@@ -1,3 +1,6 @@
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -159,9 +162,11 @@ _npm_completion () {
 complete -o default -F _npm_completion npm
 ###-end-npm-completion-###
 
-export PATH="$PATH:$HOME/JS/e2ed/node_modules/.bin:$HOME/JS/mono/apps/web-client/node_modules/.bin:$HOME/bin"
+export PATH="$PATH:$HOME/JS/e2ed/node_modules/.bin:$HOME/JS/joom-js/apps/pro-client/node_modules/.bin:$HOME/bin"
 
 export NODE_REPL_HISTORY_SIZE=1000000
+
+export VAULT_ADDR=https://vault.dev.joom.it/
 
 cd ~/JS
 
@@ -219,6 +224,5 @@ _rushx_completion () {
   fi
 }
 complete -o default -F _rushx_completion rushx
-
 
 eval `keychain --eval --agents ssh id_ed25519`

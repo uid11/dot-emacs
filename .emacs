@@ -1,25 +1,18 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; package -- Summary
 
 ;;; Commentary:
-
-;; packages:
-;;  web-mode
-;;  js2-mode
-;;  rjsx-mode
-;;  json-mode
-;;  flycheck
-;;  auto-complete (need (ac-flyspell-workaround) to work with flyspell)
-;;  https://github.com/mooz/js-doc -- for es-doc comments
-;;  magit for Git -- unnecessary
-;;  cider (https://github.com/clojure-emacs/cider)
-;;  parinfer
-;;  ibuffer (yet another buffers list -- and it's a part of Emacs)
 
 ;;; Code:
 
 (require 'server)
   (unless (server-running-p)
     (server-start))
+
+(setq json-object-type 'hash-table
+      json-array-type 'list
+      json-key-type 'string)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -30,7 +23,8 @@
    [default default default italic underline success warning error])
  '(column-number-mode t)
  '(connection-local-criteria-alist
-   '(((:application tramp :protocol "kubernetes")
+   '(((:application vc-git) vc-git-connection-default-profile)
+     ((:application tramp :protocol "kubernetes")
       tramp-kubernetes-connection-local-default-profile)
      ((:application tramp :protocol "flatpak")
       tramp-container-connection-local-default-flatpak-profile
@@ -39,7 +33,8 @@
       tramp-connection-local-default-system-profile
       tramp-connection-local-default-shell-profile)))
  '(connection-local-profile-alist
-   '((tramp-flatpak-connection-local-default-profile
+   '((vc-git-connection-default-profile (vc-git--program-version))
+     (tramp-flatpak-connection-local-default-profile
       (tramp-remote-path "/app/bin" tramp-default-remote-path "/bin"
                          "/usr/bin" "/sbin" "/usr/sbin"
                          "/usr/local/bin" "/usr/local/sbin"
@@ -134,19 +129,20 @@
      (tramp-connection-local-default-shell-profile
       (shell-file-name . "/bin/sh") (shell-command-switch . "-c"))
      (tramp-connection-local-default-system-profile
-      (path-separator . ":") (null-device . "/dev/null"))))
+      (path-separator . ":") (null-device . "/dev/null")
+      (exec-suffixes ""))))
  '(cursor-type 'bar)
  '(custom-enabled-themes '(wombat))
  '(flycheck-checker-error-threshold 900)
  '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   '(auto-complete company counsel dash dockerfile-mode dotenv-mode f
-                   flycheck google-translate groovy-mode ivy js-doc
-                   js2-mode json-mode markdown-mode
-                   markdown-preview-mode nginx-mode popup prettier-js
-                   rainbow-delimiters rainbow-mode rjsx-mode sokoban
-                   swiper tide typescript-mode typit vterm web-mode
-                   websocket yaml-mode))
+   '(cape company corfu counsel dash dockerfile-mode dotenv-mode f
+          flycheck google-translate ivy js-doc js2-mode json-mode
+          markdown-mode nginx-mode popup prettier-js
+          rainbow-delimiters rainbow-mode sokoban swiper tide
+          typescript-mode typit vterm yaml-mode yasnippet))
+ '(safe-local-variable-values
+   '((eval setq-local eglot-workspace-folders (list default-directory))))
  '(save-place-mode t nil (saveplace))
  '(show-paren-mode t)
  '(size-indication-mode t)
@@ -175,7 +171,7 @@
 (setq whitespace-style
  '(face lines-tail tabs spaces space-mark tab-mark trailing))
 (set-face-attribute
- 'whitespace-space nil :background nil :foreground "#444")
+ 'whitespace-space nil :background 'unspecified :foreground "#444")
 (set-face-attribute
  'whitespace-tab nil :background "#333" :foreground "#666")
 
@@ -379,9 +375,7 @@ If point locate in the beginning of line, kill previous line."
  'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
-(global-auto-complete-mode t)
 (global-flycheck-mode t)
-(ac-flyspell-workaround)
 
 (ispell-change-dictionary "en_US" t)
 
@@ -389,21 +383,7 @@ If point locate in the beginning of line, kill previous line."
 (require 'time)
 (setq display-time-string-forms
       '((propertize (concat " " 24-hours ":" minutes " ")
-                    'face 'egoge-display-time)))
-
-(require 'auto-complete)
-(add-to-list 'ac-modes 'Emacs-Lisp)
-(add-to-list 'ac-modes 'sh-mode)
-(add-to-list 'ac-modes 'Javascript)
-(add-to-list 'ac-modes 'web-mode)
-(add-to-list 'ac-modes 'text-mode)
-(add-to-list 'ac-modes 'fundamental-mode)
-(add-to-list 'ac-modes 'json-mode)
-(add-to-list 'ac-modes 'js2-mode)
-(add-to-list 'ac-modes 'rjsx-mode)
-(add-to-list 'ac-modes 'nxml-mode)
-(add-to-list 'ac-modes 'css-mode)
-(add-to-list 'ac-modes 'typescript-mode)
+                    'face 'mode-line)))
 
 (add-to-list 'auto-mode-alist '("\\.bashrc$" . sh-mode))
 
@@ -411,7 +391,7 @@ If point locate in the beginning of line, kill previous line."
 (setq web-mode-enable-current-element-highlight t)
 (setq web-mode-enable-current-column-highlight t)
 (add-to-list 'auto-mode-alist '("\\.html" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx$" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx$" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.yate$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.vue$" . web-mode))
@@ -443,30 +423,110 @@ If point locate in the beginning of line, kill previous line."
 
 (setq-default flycheck-eslint-rules-directories nil)
 
-(defun setup-tide-mode ()
-  "Setup tide mode."
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
-  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint)
-  (company-mode +1))
+;(defun setup-tide-mode ()
+;  "Setup tide mode."
+;  (interactive)
+;  (tide-setup)
+;  (flycheck-mode +1)
+;  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+;  (eldoc-mode +1)
+;  (tide-hl-identifier-mode +1)
+;  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
+;  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint)
+;  (company-mode +1))
 
-(require 'company)
-(setq company-tooltip-align-annotations t)
+(use-package treesit
+  :mode (("\\.ts\\'"  . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode))
+  :config
+  (setq treesit-language-source-alist
+        '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src")
+          (tsx        "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src")))
+  (dolist (grammar '(typescript tsx))
+    (unless (treesit-language-available-p grammar)
+      (treesit-install-language-grammar grammar))))
+
+(use-package typescript-ts-mode
+  :mode (("\\.ts\\'"  . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)))
+
+(add-hook 'typescript-ts-mode-hook #'eglot-ensure)
+(add-hook 'tsx-ts-mode-hook #'eglot-ensure)
+
+(add-hook 'eglot-managed-mode-hook
+          (lambda ()
+            (eglot-semantic-tokens-mode -1)))
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-ignored-server-capabilites
+               :documentHighlightProvider)
+  (define-key eglot-mode-map (kbd "C-c e r") #'eglot-rename)
+  (define-key eglot-mode-map (kbd "C-c e a") #'eglot-code-actions)
+  (define-key eglot-mode-map (kbd "C-c e f") #'eglot-format-buffer))
+
+(setq eldoc-echo-area-use-multiline-p t)
+
+(add-hook 'eglot-managed-mode-hook
+          (lambda ()
+            (setq-local eldoc-documentation-functions
+                        '(t flymake-eldoc-function
+                          eglot-hover-eldoc-function
+                          eglot-signature-eldoc-function
+                          eglot-highlight-eldoc-function))))
+
+(with-eval-after-load 'project
+  (add-to-list 'project-vc-extra-root-markers ".npmignore"))
+
+(defun my/flycheck-override-typescript-bindings ()
+  "Override Flycheck keybindings for TypeScript buffers to use Flymake."
+  (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode)
+    (define-key flycheck-mode-map (kbd "C-c ! n") #'flymake-goto-next-error)
+    (define-key flycheck-mode-map (kbd "C-c ! p") #'flymake-goto-prev-error)))
+
+(add-hook 'flycheck-mode-hook #'my/flycheck-override-typescript-bindings)
+
+
+(use-package corfu
+  :init
+  (global-corfu-mode))
+
+(setq corfu-auto t
+      corfu-auto-prefix 1
+      corfu-auto-delay 0.0)
+
+(use-package corfu-popupinfo
+  :after corfu
+  :init
+  (corfu-popupinfo-mode))
+
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev 90)
+  (add-to-list 'completion-at-point-functions #'cape-file 90)
+  (add-to-list 'completion-at-point-functions #'cape-keyword 90)
+)
+
+(setq completion-ignore-case nil)
+(setq read-buffer-completion-ignore-case nil)
+(setq read-file-name-completion-ignore-case nil)
+
+(setq cape-dabbrev-check-other-buffers t)
+(setq cape-dabbrev-min-length 3)
+(setq cape-dabbrev-ignore-case nil)
+
+(setq dabbrev-case-replace nil)
+(setq dabbrev-case-fold-search nil)
 
 (flycheck-add-mode 'css-csslint 'css-mode)
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-mode 'javascript-eslint 'web-mode)
 
+
 (defun cust-def-use-eslint-from-node-modules ()
   "Set local eslint for flycheck."
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
-                "node_modules"))
+                "node_moqdules"))
          (eslint (and root
                       (expand-file-name "node_modules/.bin/eslint"
                                         root))))
@@ -491,13 +551,6 @@ If point locate in the beginning of line, kill previous line."
 
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "tsx" (file-name-extension buffer-file-name))
-              (setup-tide-mode))))
-
 ;; need to support js-mode (JavaScript) because emacs opens JS files
 ;; with shebang with fallback to this mode
 (add-hook 'js-mode-hook
@@ -519,11 +572,19 @@ If point locate in the beginning of line, kill previous line."
           #'(lambda ()
               (define-key web-mode-map (kbd "C-c C-b") 'counsel-bookmark)))
 
-(require 'typescript-mode)
-(add-hook 'typescript-mode-hook
+(require 'typescript-ts-mode)
+(add-hook 'typescript-ts-mode-hook
           #'(lambda ()
-              (define-key typescript-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
-              (define-key typescript-mode-map "@" 'js-doc-insert-tag)))
+              (define-key typescript-ts-mode-map (kbd "C-c C-d") #'eldoc-print-current-symbol-info)
+              (define-key typescript-ts-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
+              (define-key typescript-ts-mode-map "@" 'js-doc-insert-tag)))
+
+(add-hook 'tsx-ts-mode-hook
+          #'(lambda ()
+              (define-key tsx-ts-mode-map (kbd "C-c C-d") #'eldoc-print-current-symbol-info)
+              (define-key tsx-ts-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
+              (define-key tsx-ts-mode-map "@" 'js-doc-insert-tag)))
+
 
 (require 'prettier-js)
 (add-hook 'css-mode-hook 'prettier-js-mode)
@@ -532,7 +593,8 @@ If point locate in the beginning of line, kill previous line."
 (add-hook 'json-mode-hook 'prettier-js-mode)
 (add-hook 'markdown-mode-hook 'prettier-js-mode)
 (add-hook 'rjsx-mode-hook 'prettier-js-mode)
-(add-hook 'typescript-mode-hook 'prettier-js-mode)
+(add-hook 'typescript-ts-mode-hook 'prettier-js-mode)
+(add-hook 'tsx-ts-mode-hook 'prettier-js-mode)
 (add-hook 'web-mode-hook 'prettier-js-mode)
 (add-hook 'yaml-mode-hook 'prettier-js-mode)
 

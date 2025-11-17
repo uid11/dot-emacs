@@ -600,6 +600,10 @@ C-u C-c ! x -- enable disabled checkers
 M-: (executable-find "eslint") -- check that Emacs find the eslint executable
 M-x flycheck-select-checker <RET> javascript-eslint -- select checker
 
+----Eglot
+
+C-c C-d -- open *eldoc* buffer with eldoc-print-current-symbol-info
+
 ----Ido and icomplete (in minibuffer)
 
 C-r/C-, -- previous completion variant
