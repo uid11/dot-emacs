@@ -139,7 +139,7 @@
    '(cape company corfu counsel dash dockerfile-mode dotenv-mode f
           flycheck google-translate ivy js-doc js2-mode json-mode
           markdown-mode nginx-mode popup prettier-js
-          rainbow-delimiters rainbow-mode sokoban swiper tide
+          rainbow-delimiters rainbow-mode sokoban swiper
           typescript-mode typit vterm yaml-mode yasnippet))
  '(safe-local-variable-values
    '((eval setq-local eglot-workspace-folders (list default-directory))))
@@ -423,18 +423,6 @@ If point locate in the beginning of line, kill previous line."
 
 (setq-default flycheck-eslint-rules-directories nil)
 
-;(defun setup-tide-mode ()
-;  "Setup tide mode."
-;  (interactive)
-;  (tide-setup)
-;  (flycheck-mode +1)
-;  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-;  (eldoc-mode +1)
-;  (tide-hl-identifier-mode +1)
-;  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
-;  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint)
-;  (company-mode +1))
-
 (use-package treesit
   :mode (("\\.ts\\'"  . typescript-ts-mode)
          ("\\.tsx\\'" . tsx-ts-mode))
@@ -526,7 +514,7 @@ If point locate in the beginning of line, kill previous line."
   "Set local eslint for flycheck."
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
-                "node_moqdules"))
+                "node_modules"))
          (eslint (and root
                       (expand-file-name "node_modules/.bin/eslint"
                                         root))))
