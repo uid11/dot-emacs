@@ -132,9 +132,9 @@
  '(flycheck-checker-error-threshold 900)
  '(indicate-buffer-boundaries 'left)
  '(package-selected-packages
-   '(cape company corfu counsel dash dockerfile-mode dotenv-mode f
-          flycheck google-translate ivy js-doc js2-mode json-mode
-          markdown-mode nginx-mode popup prettier-js
+   '(cape company corfu counsel dash dockerfile-mode dotenv-mode
+          eldoc-box f flycheck google-translate ivy js-doc js2-mode
+          json-mode markdown-mode nginx-mode popup prettier-js
           rainbow-delimiters rainbow-mode sokoban swiper
           typescript-mode typit vterm yaml-mode yasnippet))
  '(safe-local-variable-values
@@ -437,10 +437,6 @@ If point locate in the beginning of line, kill previous line."
 (add-hook 'typescript-ts-mode-hook #'eglot-ensure)
 (add-hook 'tsx-ts-mode-hook #'eglot-ensure)
 
-(add-hook 'eglot-managed-mode-hook
-          (lambda ()
-            (eglot-semantic-tokens-mode -1)))
-
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-ignored-server-capabilites
                :documentHighlightProvider)
@@ -452,11 +448,15 @@ If point locate in the beginning of line, kill previous line."
 
 (add-hook 'eglot-managed-mode-hook
           (lambda ()
+            (eglot-semantic-tokens-mode -1)
             (setq-local eldoc-documentation-functions
                         '(t flymake-eldoc-function
                           eglot-hover-eldoc-function
                           eglot-signature-eldoc-function
-                          eglot-highlight-eldoc-function))))
+                          eglot-highlight-eldoc-function)))
+          :append)
+
+; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode :append)
 
 (with-eval-after-load 'project
   (add-to-list 'project-vc-extra-root-markers ".npmignore"))
@@ -559,13 +559,13 @@ If point locate in the beginning of line, kill previous line."
 (require 'typescript-ts-mode)
 (add-hook 'typescript-ts-mode-hook
           #'(lambda ()
-              (define-key typescript-ts-mode-map (kbd "C-c C-d") #'eldoc-print-current-symbol-info)
+              (define-key typescript-ts-mode-map (kbd "C-c C-d") #'eldoc-box-help-at-point)
               (define-key typescript-ts-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
               (define-key typescript-ts-mode-map "@" 'js-doc-insert-tag)))
 
 (add-hook 'tsx-ts-mode-hook
           #'(lambda ()
-              (define-key tsx-ts-mode-map (kbd "C-c C-d") #'eldoc-print-current-symbol-info)
+              (define-key tsx-ts-mode-map (kbd "C-c C-d") #'eldoc-box-help-at-point)
               (define-key tsx-ts-mode-map (kbd "C-c I") 'cust-def-insert-js-doc)
               (define-key tsx-ts-mode-map "@" 'js-doc-insert-tag)))
 
